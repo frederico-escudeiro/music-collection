@@ -1,3 +1,14 @@
+
+@media screen and (max-width:600px) {
+  .album-content{
+    flex-wrap: wrap-reverse;
+  }
+
+  .details-content{
+    flex-grow: 1;
+  }
+}
+
 a:hover{
     background-color: #f6aa1c;
     color:white;
