@@ -4,7 +4,16 @@ app-side-bar {
     width: 160px;
     min-height: 100vh;
     height: auto;
+}
 
+@media screen and (max-width:600px) {
+    app-side-bar {
+        background: #000;
+        min-width: fit-content;
+        width:fit-content;
+        min-height: 100vh;
+        height: auto;
+    }
 }
 
 app-albums {

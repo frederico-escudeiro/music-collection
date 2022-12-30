@@ -1,11 +1,27 @@
+@media screen and (max-width:600px) {
+  .responsive{
+    display:none;
+  }
+}
+
 .header-box{
   cursor: pointer;
 }
+
 li{
     border-radius: 4px;
     cursor: pointer;
 }
 
+i{
+  color: #f6aa1c;
+}
+
 li:hover{
   background-color: #f6aa1c;
 }
+
+li:hover i{
+  color: black;
+}
+
