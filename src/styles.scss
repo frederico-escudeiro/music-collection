@@ -1,0 +1,11 @@
+/* Importing Bootstrap SCSS file. */
+@import 'node_modules/bootstrap/scss/bootstrap';
+
+app-albums,
+app-album,
+app-home,
+app-songs,
+app-song,
+app-page-not-found{
+    flex-grow: 1;
+}

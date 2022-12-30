@@ -1,0 +1,18 @@
+<h1 class="fs-1 text-center pt-4 pb-0">{{song.songTitle}}<br><i (click)="onToggleFavorite()" [ngClass]="favorite ? 'fa-solid' : 'fa-regular'" class="fa-regular fa-heart mt-2"></i></h1>
+<p class="fs-5 text-center mt-3">Details</p>
+<hr class="my-1 mx-5">
+<ul class="list-group list-unstyled py-2 my-3 text-left mx-5">
+    <li class="list-group-item fs-4 py-1 d-flex justify-content-between">
+        <div>Length</div>
+        <div>{{song.songLength}}</div>
+    </li>
+    <li class="list-group-item fs-4 py-1 d-flex justify-content-between">
+        <div>Album</div>
+        <div>{{song.albumTitle}}</div>
+    </li>
+    <li class="list-group-item fs-4 py-1 d-flex justify-content-between">
+        <div>Artist</div>
+        <div>{{song.artistName}}</div>
+    </li>
+    
+</ul>
