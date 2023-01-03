@@ -1,22 +1,41 @@
-import { TmplAstRecursiveVisitor } from '@angular/compiler';
 import { Injectable } from '@angular/core';
-import collectionData from '../assets/json/artists_albuns.json';
-
+import collectionData from '../assets/json/artists_albuns.json'
+import fs from 'fs';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class JsonService {
+  collectionData = JSON.parse(this.getAllData());
 
-  postJsonData() {
-    return collectionData;
+  getAllData():string {
+    let data:string;
+    
+    fs.readFile(
+      '../assets/json/artists_albuns.json',
+      'utf-8',
+      (err: string, jsonString: string) => {
+        if (err) {
+          console.log(err);
+        } else {
+          try {
+            data = jsonString;
+          } catch (err) {
+            console.log('Error parsing JSON', err);
+          }
+        }
+        return data;
+      }
+    
+    )
+    return '';
   }
 
   getArtistData() {
     var artists: any[] = []
-    for (let artist in collectionData) {
-      artists.push(collectionData[artist]);
+    for (let artist in this.collectionData) {
+      artists.push(this.collectionData[artist]);
     }
     return artists;
   }
@@ -26,7 +45,7 @@ export class JsonService {
       albumTitle: string,
       artistName: string
     }[] = []
-    for (let artist of collectionData) {
+    for (let artist of this.collectionData) {
       for (let album of artist.albums) {
         artistAlbums.push({
           albumTitle: album.title,
@@ -38,7 +57,7 @@ export class JsonService {
   }
 
   getAlbumByTitle(albumTitle: string) {
-    for (let artist of collectionData) {
+    for (let artist of this.collectionData) {
       for (let album of artist.albums) {
         if (album.title === albumTitle) {
           return {
@@ -83,7 +102,7 @@ export class JsonService {
       artistName: string,
       albumTitle: string
     }[] = [];
-    for (let artist of collectionData) {
+    for (let artist of this.collectionData) {
       for (let album of artist.albums) {
         for (let song of album.songs) {
           songs.push(
@@ -100,7 +119,7 @@ export class JsonService {
   }
 
   getSongByTitle(songTitle: string) {
-    for (let artist of collectionData) {
+    for (let artist of this.collectionData) {
       for (let album of artist.albums) {
         for (let song of album.songs)
           if (song.title === songTitle) {
@@ -122,14 +141,14 @@ export class JsonService {
   }
 
   updateSongDataWithFavorite(songTitle: string) {
-    for (let artist of collectionData) {
+    for (let artist of this.collectionData) {
       for (let album of artist.albums) {
         for (let song of album.songs)
           if (song.title === songTitle) {
-            if(!song.hasOwnProperty("favorite")){
-              Object.defineProperty(song,'favorite',{
-                value:true,
-                writable:true
+            if (!song.hasOwnProperty("favorite")) {
+              Object.defineProperty(song, 'favorite', {
+                value: true,
+                writable: true
               });
             }
           }
@@ -138,8 +157,9 @@ export class JsonService {
   }
 
 
-  putUpdatedData(data: string) {
-    //write in file
+  putUpdatedData(albumTitle: string, songTitle: string, favorite: boolean) {
+    const { writeFile, readFile } = require('fs');
+    const path = './config.json';
 
   }
 }

@@ -1,4 +1,4 @@
-<h1 class="fs-1 text-center pt-4 pb-0">{{song.songTitle}}<br><i (click)="onToggleFavorite()" [ngClass]="favorite ? 'fa-solid' : 'fa-regular'" class="fa-regular fa-heart mt-2"></i></h1>
+<h1 class="fs-1 text-center pt-4 pb-0">{{song.songTitle}}<br><i [ngClass]="favorite ? 'fa-solid' : 'fa-regular'" class="fa-heart mt-2" (click)="onToggleFavorite()" ></i></h1>
 <p class="fs-5 text-center mt-3">Details</p>
 <hr class="my-1 mx-5">
 <ul class="list-group list-unstyled py-2 my-3 text-left mx-5">
