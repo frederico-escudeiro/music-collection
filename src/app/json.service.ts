@@ -1,55 +1,34 @@
 import { Injectable } from '@angular/core';
-import collectionData from '../assets/json/artists_albuns.json'
-import fs from 'fs';
+import jsonData from '../assets/json/artists_albuns.json';
+import { Song, Album, SongFavorite, AlbumFavorite } from 'src/helper_classes/album';
 
+
+
+
+interface Artist {
+  name: string,
+  albums: Album[]
+}
+
+let collectionArray: Artist[] = jsonData;
 
 @Injectable({
   providedIn: 'root'
 })
 export class JsonService {
-  collectionData = JSON.parse(this.getAllData());
 
-  getAllData():string {
-    let data:string;
-    
-    fs.readFile(
-      '../assets/json/artists_albuns.json',
-      'utf-8',
-      (err: string, jsonString: string) => {
-        if (err) {
-          console.log(err);
-        } else {
-          try {
-            data = jsonString;
-          } catch (err) {
-            console.log('Error parsing JSON', err);
-          }
-        }
-        return data;
-      }
-    
-    )
-    return '';
-  }
 
-  getArtistData() {
-    var artists: any[] = []
-    for (let artist in this.collectionData) {
-      artists.push(this.collectionData[artist]);
-    }
-    return artists;
-  }
 
   getAlbumsData() {
     var artistAlbums: {
-      albumTitle: string,
+      album: Album,
       artistName: string
     }[] = []
-    for (let artist of this.collectionData) {
+    for (let artist of collectionArray) {
       for (let album of artist.albums) {
         artistAlbums.push({
-          albumTitle: album.title,
-          artistName: artist.name
+          artistName: artist.name,
+          album: album
         });
       }
     }
@@ -57,29 +36,30 @@ export class JsonService {
   }
 
   getAlbumByTitle(albumTitle: string) {
-    for (let artist of this.collectionData) {
+    for (let artist of collectionArray) {
       for (let album of artist.albums) {
         if (album.title === albumTitle) {
           return {
-            title: album.title,
-            songs: album.songs,
-            description: album.description,
             artistName: artist.name,
+            album: album,
             duration: this.getAlbumDuration(album.songs)
           };
         }
       }
     }
+    var emptyAlbum: Album = {
+      title:"No album with the title " + albumTitle + " was found",
+      songs:[],
+      description:"-"
+    }
     return {
-      title: "No album with the title " + albumTitle + " was found",
-      songs: [],
-      description: "-",
-      duration: "00:00",
-      artistName: "-"
+      artistName: "-",
+      album: emptyAlbum,
+      duration: "00:00"
     };
   }
 
-  getAlbumDuration(songs: { title: string, length: string }[]) {
+  getAlbumDuration(songs: Song[]) {
     let totalSeconds = 0;
     let result = "";
     for (let song of songs) {
@@ -97,18 +77,16 @@ export class JsonService {
 
   getSongData() {
     var songs: {
-      songTitle: string,
-      songLength: string,
+      song:SongFavorite,
       artistName: string,
       albumTitle: string
     }[] = [];
-    for (let artist of this.collectionData) {
+    for (let artist of collectionArray) {
       for (let album of artist.albums) {
         for (let song of album.songs) {
           songs.push(
             {
-              songTitle: song.title,
-              songLength: song.length,
+              song:<SongFavorite>song,
               artistName: artist.name,
               albumTitle: album.title
             });
@@ -119,47 +97,81 @@ export class JsonService {
   }
 
   getSongByTitle(songTitle: string) {
-    for (let artist of this.collectionData) {
+    for (let artist of collectionArray) {
       for (let album of artist.albums) {
         for (let song of album.songs)
           if (song.title === songTitle) {
             return {
-              songTitle: song.title,
-              songLength: song.length,
+              song: song,
               artistName: artist.name,
               albumTitle: album.title
             };
           }
       }
     }
+    let emptySong:Song = {
+      title:"No song with the title " + songTitle + " was found",
+      length:"00:00"
+    }
     return {
-      songTitle: "No song with the title " + songTitle + " was found",
-      songLength: "00:00",
+      song: emptySong,
       artistName: "-",
       albumTitle: "-"
     };
   }
 
-  updateSongDataWithFavorite(songTitle: string) {
-    for (let artist of this.collectionData) {
+  updateSongDataWithFavorite(songTitle: string, albumTitle: string, artistName: string,  isFavorite: boolean) {
+
+    let songToUpdate = collectionArray
+      .find(artist => artist.name === artistName)
+      ?.albums.find(album => album.title === albumTitle)
+      ?.songs.filter(song => song.title === songTitle)[0];
+
+    let favoriteSong:SongFavorite = {
+      title: songToUpdate?.title !== undefined ? songToUpdate.title : '',
+      length: songToUpdate?.length !== undefined ? songToUpdate.length : '',
+      favorite: isFavorite
+    }
+
+    for (let artist of collectionArray) {
       for (let album of artist.albums) {
-        for (let song of album.songs)
-          if (song.title === songTitle) {
-            if (!song.hasOwnProperty("favorite")) {
-              Object.defineProperty(song, 'favorite', {
-                value: true,
-                writable: true
-              });
-            }
+        for (let song of album.songs) {
+          if (song === songToUpdate) {
+            album.songs[album.songs.indexOf(song)] = favoriteSong;
+            artist.albums[artist.albums.indexOf(album)] = album;
+            collectionArray[collectionArray.indexOf(artist)] = artist;
           }
+        }
       }
     }
+    console.log(favoriteSong);
+    console.log(collectionArray);
+  }
+
+  updateAlbumDataWithFavorite(albumTitle: string, artistName: string, isFavorite: boolean) {
+
+    let albumToUpdate = collectionArray
+      .find(artist => artist.name === artistName)
+      ?.albums.filter(album => album.title === albumTitle)[0];
+
+    let favoriteAlbum:AlbumFavorite = {
+      title: albumToUpdate?.title !== undefined ? albumToUpdate.title : '',
+      description: albumToUpdate?.description !== undefined ? albumToUpdate.description : '',
+      songs: albumToUpdate?.songs !== undefined ? albumToUpdate.songs : [],
+      favorite: isFavorite
+    }
+
+    for (let artist of collectionArray) {
+      for (let album of artist.albums) {
+          if (album === albumToUpdate) {
+            artist.albums[artist.albums.indexOf(album)] = favoriteAlbum;
+            collectionArray[collectionArray.indexOf(artist)] = artist;
+        }
+      }
+    }
+    console.log(favoriteAlbum);
+    console.log(collectionArray);
   }
 
 
-  putUpdatedData(albumTitle: string, songTitle: string, favorite: boolean) {
-    const { writeFile, readFile } = require('fs');
-    const path = './config.json';
-
-  }
 }

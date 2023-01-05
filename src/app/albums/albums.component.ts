@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlbumFavorite } from 'src/helper_classes/album';
 import { JsonService } from '../json.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class AlbumsComponent {
 
   artistAlbums = this.jsonService.getAlbumsData()
 
-  onLoadAlbumByTitle(albumTitle:string){
-    this.router.navigate(['/myalbums/' + albumTitle]);
+  onLoadAlbumByTitle(album:AlbumFavorite){
+    this.router.navigate(['/myalbums/' + album.title + (album.favorite ? '/favorite' : '')]);
   }
 }

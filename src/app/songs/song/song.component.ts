@@ -11,14 +11,16 @@ export class SongComponent implements OnInit{
   songTitle="";
   albumTitle=""
   song:any;
-  favorite:boolean = false;
+  favorite:boolean =  false;
+  
   constructor(private route:ActivatedRoute, private jsonService:JsonService, private router: Router){}
 
   ngOnInit(){
     this.songTitle = this.route.snapshot.params['songTitle'];
     this.albumTitle = this.route.snapshot.params['albumTitle'];
     this.song = this.jsonService.getSongByTitle(this.songTitle);
-    this.favorite = this.route.snapshot.paramMap.get('favorite') === 'favorite';
+    this.favorite = this.router.url.includes("/favorite",0);
+    
   }
 
   onToggleFavorite(){
@@ -29,6 +31,11 @@ export class SongComponent implements OnInit{
         + this.route.snapshot.paramMap.get('songTitle')
         + (this.favorite? '/favorite' : '')
       );
-      this.jsonService.putUpdatedData(this.albumTitle,this.songTitle,this.favorite);
+      this.jsonService.updateSongDataWithFavorite(
+        this.songTitle,
+        this.song.albumTitle,
+        this.song.artistName,
+        this.favorite
+      )
     }
   }

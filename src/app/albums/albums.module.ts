@@ -16,8 +16,9 @@ import { AlbumsComponent } from "./albums.component";
         RouterModule.forChild([
             { path: '', component: AlbumsComponent },
             { path: ':albumTitle', component: AlbumComponent },
+            { path: ':albumTitle/favorite', component: AlbumComponent },
             { path: ':albumTitle/:songTitle', component: SongComponent },
-            { path: ':albumTitle/:songTitle/:favorite', component: SongComponent }
+            { path: ':albumTitle/:songTitle/favorite', component: SongComponent }
         ])
     ],
     exports: [

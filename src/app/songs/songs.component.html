@@ -1,7 +1,7 @@
 <h1 class="fs-1 text-center py-4">My Songs</h1>
 <div class="list-group mx-2">
-    <a (click)="onLoadSongByTitle(song.songTitle)" *ngFor="let song of songs" class="list-group-item list-group-item-action">
-        <h6 class="fs-5 mb-0">{{song.songTitle}}</h6>
+    <a (click)="onLoadSongByTitle(song.song.title)" *ngFor="let song of songs" class="list-group-item list-group-item-action">
+        <h6 class="fs-5 mb-0">{{song.song.title}}</h6>
         <p class="mb-0 opacity-90"> {{song.artistName}}</p>
     </a>
 </div>

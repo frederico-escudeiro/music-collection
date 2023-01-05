@@ -1,10 +1,10 @@
-<h1 class="fs-1 text-center pt-4 pb-0">{{song.songTitle}}<br><i [ngClass]="favorite ? 'fa-solid' : 'fa-regular'" class="fa-heart mt-2" (click)="onToggleFavorite()" ></i></h1>
+<h1 class="fs-1 text-center pt-4 pb-0">{{song.song.title}}<br><i [ngClass]="favorite ? 'fa-solid' : 'fa-regular'" class="fa-heart mt-2" (click)="onToggleFavorite()" ></i></h1>
 <p class="fs-5 text-center mt-3">Details</p>
 <hr class="my-1 mx-5">
 <ul class="list-group list-unstyled py-2 my-3 text-left mx-5">
     <li class="list-group-item fs-4 py-1 d-flex justify-content-between">
         <div>Length</div>
-        <div>{{song.songLength}}</div>
+        <div>{{song.song.length}}</div>
     </li>
     <li class="list-group-item fs-4 py-1 d-flex justify-content-between">
         <div>Album</div>
