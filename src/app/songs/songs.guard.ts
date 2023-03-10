@@ -5,7 +5,7 @@ import { GlobalConstants } from "src/shared/global.constants";
 import { HttpService } from "../http/http.service";
 
 @Injectable()
-export class SongsGuardService implements CanActivate {
+export class SongsGuardService {
 
     constructor(private httpService: HttpService, private router: Router) { }
 

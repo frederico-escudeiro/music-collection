@@ -19,9 +19,9 @@ import { GlobalConstants } from "src/shared/global.constants";
     imports: [
         CommonModule,
         RouterModule.forChild([
-            { path: '', component: AlbumsComponent }, //myalbums
+            { path: '', component: AlbumsComponent },
             {
-                path: ':' + GlobalConstants.ALBUM_TITLE_STRING, //myalbums/albumX
+                path: ':' + GlobalConstants.ALBUM_TITLE_STRING,
                 component: AlbumComponent,
                 canActivate: [AlbumsGuardService],
                 children: [

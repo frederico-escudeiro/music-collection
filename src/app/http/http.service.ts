@@ -95,6 +95,24 @@ export class HttpService {
     return null;
   }
 
+  getFavoritesData(){
+    let favorites: (Album | Song)[] =[];
+    
+    for(let artist of collectionArray){
+      for(let album of artist.albums){
+        if(album.favorite){
+          favorites.push(album);
+        }
+        for( let song of album.songs){
+          if(song.favorite){
+            favorites.push(song);
+          }
+        }
+      }
+    }
+    return favorites;
+  }
+
   postSongDataWithFavorite(songTitle: string, albumTitle: string, artistName: string,  isFavorite: boolean) {
 
     let songToUpdate = collectionArray

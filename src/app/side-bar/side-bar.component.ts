@@ -21,6 +21,6 @@ export class SideBarComponent {
   }
 
   onLoadFavorites() {
-    this.router.navigate(['/' + GlobalConstants.MY_FAVORITES]);
+    this.router.navigate(['/' + GlobalConstants.MY_FAVORITES_STRING]);
   }
 }

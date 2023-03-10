@@ -11,6 +11,7 @@ import { AlbumsModule } from './albums/albums.module';
 import { SongsModule } from './songs/songs.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FavoritesComponent } from './favorites/favorites.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     SideBarComponent,
     HomeComponent,
     PageNotFoundComponent,
+    FavoritesComponent,
   ],
   providers:[MatSnackBar],
   imports: [
