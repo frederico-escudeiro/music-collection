@@ -1,23 +1,15 @@
 import { Injectable } from '@angular/core';
-import jsonData from '../assets/json/artists_albuns.json';
-import { Song, Album, SongFavorite, AlbumFavorite } from 'src/helper_classes/album';
+import jsonData from '../../assets/json/artists_albuns.json';
+import { Song, Album , Artist } from 'src/shared/types.interface';
 
 
-
-
-interface Artist {
-  name: string,
-  albums: Album[]
-}
 
 let collectionArray: Artist[] = jsonData;
 
 @Injectable({
   providedIn: 'root'
 })
-export class JsonService {
-
-
+export class HttpService {
 
   getAlbumsData() {
     var artistAlbums: {
@@ -47,16 +39,7 @@ export class JsonService {
         }
       }
     }
-    var emptyAlbum: Album = {
-      title:"No album with the title " + albumTitle + " was found",
-      songs:[],
-      description:"-"
-    }
-    return {
-      artistName: "-",
-      album: emptyAlbum,
-      duration: "00:00"
-    };
+    return null;
   }
 
   getAlbumDuration(songs: Song[]) {
@@ -77,7 +60,7 @@ export class JsonService {
 
   getSongData() {
     var songs: {
-      song:SongFavorite,
+      song:Song,
       artistName: string,
       albumTitle: string
     }[] = [];
@@ -86,7 +69,7 @@ export class JsonService {
         for (let song of album.songs) {
           songs.push(
             {
-              song:<SongFavorite>song,
+              song:<Song>song,
               artistName: artist.name,
               albumTitle: album.title
             });
@@ -109,25 +92,17 @@ export class JsonService {
           }
       }
     }
-    let emptySong:Song = {
-      title:"No song with the title " + songTitle + " was found",
-      length:"00:00"
-    }
-    return {
-      song: emptySong,
-      artistName: "-",
-      albumTitle: "-"
-    };
+    return null;
   }
 
-  updateSongDataWithFavorite(songTitle: string, albumTitle: string, artistName: string,  isFavorite: boolean) {
+  postSongDataWithFavorite(songTitle: string, albumTitle: string, artistName: string,  isFavorite: boolean) {
 
     let songToUpdate = collectionArray
       .find(artist => artist.name === artistName)
       ?.albums.find(album => album.title === albumTitle)
       ?.songs.filter(song => song.title === songTitle)[0];
 
-    let favoriteSong:SongFavorite = {
+    let favoriteSong:Song = {
       title: songToUpdate?.title !== undefined ? songToUpdate.title : '',
       length: songToUpdate?.length !== undefined ? songToUpdate.length : '',
       favorite: isFavorite
@@ -144,20 +119,18 @@ export class JsonService {
         }
       }
     }
-    console.log(favoriteSong);
-    console.log(collectionArray);
   }
 
-  updateAlbumDataWithFavorite(albumTitle: string, artistName: string, isFavorite: boolean) {
+  postAlbumDataWithFavorite(albumTitle: string, artistName: string, isFavorite: boolean) {
 
     let albumToUpdate = collectionArray
       .find(artist => artist.name === artistName)
       ?.albums.filter(album => album.title === albumTitle)[0];
 
-    let favoriteAlbum:AlbumFavorite = {
-      title: albumToUpdate?.title !== undefined ? albumToUpdate.title : '',
-      description: albumToUpdate?.description !== undefined ? albumToUpdate.description : '',
-      songs: albumToUpdate?.songs !== undefined ? albumToUpdate.songs : [],
+    let favoriteAlbum:Album = {
+      title: albumToUpdate?.title ? albumToUpdate.title : '',
+      description: albumToUpdate?.description ? albumToUpdate.description : '',
+      songs: albumToUpdate?.songs ? albumToUpdate.songs : [],
       favorite: isFavorite
     }
 
@@ -169,8 +142,6 @@ export class JsonService {
         }
       }
     }
-    console.log(favoriteAlbum);
-    console.log(collectionArray);
   }
 
 

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlbumFavorite } from 'src/helper_classes/album';
-import { JsonService } from '../json.service';
+import { GlobalConstants } from 'src/shared/global.constants';
+import { Album } from 'src/shared/types.interface';
+import { HttpService } from '../http/http.service';
 
 @Component({
   selector: 'app-albums',
@@ -9,11 +10,11 @@ import { JsonService } from '../json.service';
   styleUrls: ['./albums.component.scss']
 })
 export class AlbumsComponent {
-  constructor(private jsonService:JsonService, private router:Router){}
+  constructor(private httpService: HttpService, private router: Router) { }
 
-  artistAlbums = this.jsonService.getAlbumsData()
+  artistAlbums = this.httpService.getAlbumsData()
 
-  onLoadAlbumByTitle(album:AlbumFavorite){
-    this.router.navigate(['/myalbums/' + album.title + (album.favorite ? '/favorite' : '')]);
+  onLoadAlbumByTitle(album: Album) {
+    this.router.navigate(['/' + GlobalConstants.MY_ALBUMS_STRING + '/' + album.title + (album.favorite ? '/' + GlobalConstants.FAVORITE_STRING : '')]);
   }
 }

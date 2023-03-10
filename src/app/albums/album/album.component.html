@@ -1,20 +1,13 @@
-<h1 class="fs-1 text-center pt-4 pb-0"> {{ album.album.title }}<br><i [ngClass]="favorite ? 'fa-solid' : 'fa-regular'" class="fa-heart mt-2" (click)="onToggleFavorite()" ></i></h1>
+<h1 class="fs-1 text-center pt-4 pb-0"> {{ album.album.title }}<br><i [ngClass]="favorite ? 'fa-solid' : 'fa-regular'"
+        class="fa-heart mt-2" (click)="onToggleFavorite()"></i></h1>
 <p class="fs-4 text-center opacity-90 p-0 mt-0 mb-3">{{ album.artistName }}</p>
 <div class="album-content d-flex">
     <div class="list-group mx-2 flex-grow-1">
-        <a (click)="onLoadSongByTitle(song)" *ngFor="let song of album.album.songs" class="list-group-item list-group-item-action">
+        <a (click)="onLoadSongByTitle(song)" *ngFor="let song of album.album.songs"
+            class="list-group-item list-group-item-action">
             <h6 class="fs-5 mb-0">{{ song.title }}</h6>
             <p class="mb-0 opacity-90"> {{ song.length }} </p>
         </a>
     </div>
-    <div class="details-content w-25 px-4">
-        <p class="fs-5 text-center">Details</p>
-        <hr class="m-2">
-        <ul class="list-unstyled py-2">
-            <li class="py-1"><strong>Album duration</strong><br>{{ album.duration }}</li>
-            <li class="py-2"><strong>Number of songs</strong><br>{{ album.album.songs.length }} songs</li>
-            <li class="py-2"><strong>Description</strong><br>{{ album.album.description }}</li>
-        </ul>
-        <hr class="mb-4">
-    </div>
+    <app-album-detail class="details-content w-25 px-4" [album]="album"></app-album-detail>
 </div>

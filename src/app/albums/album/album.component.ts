@@ -1,44 +1,45 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { OnInit } from '@angular/core';
-import { JsonService } from 'src/app/json.service';
+import { HttpService } from 'src/app/http/http.service';
 import { Router } from '@angular/router';
-import { Album, Song, SongFavorite } from 'src/helper_classes/album';
+import { Album, Song } from 'src/shared/types.interface';
+import { GlobalConstants } from 'src/shared/global.constants';
 
 @Component({
   selector: 'app-album',
   templateUrl: './album.component.html',
   styleUrls: ['./album.component.scss']
 })
-export class AlbumComponent implements OnInit{
-  
-  albumTitle:string = "";
-  album:any;
-  favorite:boolean = false; 
-  constructor(private route:ActivatedRoute, private router: Router, private jsonService:JsonService){}
+export class AlbumComponent implements OnInit {
+
+  albumTitle: string = "";
+  album: any;
+  favorite: boolean = false;
+
+  constructor(private route: ActivatedRoute, private router: Router, private httpService: HttpService) { }
 
   ngOnInit(): void {
-    this.albumTitle = this.route.snapshot.params['albumTitle'];
-    this.album = this.jsonService.getAlbumByTitle(this.albumTitle);
-    this.favorite = this.router.url.includes("/favorite",0);
-    console.log('favorite:' + this.favorite);
+    this.albumTitle = this.route.snapshot.params[GlobalConstants.ALBUM_TITLE_STRING];
+    this.album = this.httpService.getAlbumByTitle(this.albumTitle);
+    this.favorite = this.router.url.includes('/' + GlobalConstants.FAVORITE_STRING, 0);
   }
 
-  onLoadSongByTitle(song:SongFavorite){
-    this.router.navigate(['/myalbums/' + this.albumTitle + '/' + song.title + (song.favorite ? '/favorite' : '')]);
+  onLoadSongByTitle(song: Song) {
+    this.router.navigate(['/' + GlobalConstants.MY_ALBUMS_STRING + '/' + this.albumTitle + '/' + song.title + (song.favorite ? '/' + GlobalConstants.FAVORITE_STRING : '')]);
   }
 
-  onToggleFavorite(){
+  onToggleFavorite() {
     this.favorite = !this.favorite;
-      this.router.navigateByUrl('/myalbums/' 
-        + this.route.snapshot.paramMap.get('albumTitle')
-        + (this.favorite? '/favorite' : '')
-      );
-      this.jsonService.updateAlbumDataWithFavorite(
-        this.albumTitle,
-        this.album.artistName,
-        this.favorite
-      )
-    }
+    this.router.navigateByUrl('/' + GlobalConstants.MY_ALBUMS_STRING + '/'
+      + this.route.snapshot.paramMap.get(GlobalConstants.ALBUM_TITLE_STRING)
+      + (this.favorite ? '/' + GlobalConstants.FAVORITE_STRING : '')
+    );
+    this.httpService.postAlbumDataWithFavorite(
+      this.albumTitle,
+      this.album.artistName,
+      this.favorite
+    )
+  }
 
 }

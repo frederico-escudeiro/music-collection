@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { SongFavorite } from 'src/helper_classes/album';
-import { JsonService } from '../json.service';
+import { GlobalConstants } from 'src/shared/global.constants';
+import { HttpService } from '../http/http.service';
 
 @Component({
   selector: 'app-songs',
@@ -10,14 +10,14 @@ import { JsonService } from '../json.service';
 })
 export class SongsComponent {
 
-  constructor(private jsonService: JsonService, private router: Router) { }
+  constructor(private httpService: HttpService, private router: Router) { }
 
-  songs = this.jsonService.getSongData();
+  songs = this.httpService.getSongData();
 
   onLoadSongByTitle(songTitle: string) {
     for (let song of this.songs) {
       if (songTitle === song.song.title) {
-        this.router.navigate(['/myalbums/' + song.albumTitle + '/' + song.song.title  + (song.song.favorite ? '/favorite' : '')]);
+        this.router.navigate(['/' + GlobalConstants.MY_ALBUMS_STRING + '/' + song.albumTitle + '/' + song.song.title + (song.song.favorite ? '/'+ GlobalConstants.FAVORITE_STRING : '')]);
       }
     }
   }

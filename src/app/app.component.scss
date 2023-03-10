@@ -1,3 +1,13 @@
+@media screen and (max-width:700px) {
+    app-side-bar {
+        background: #000;
+        min-width: fit-content;
+        width: fit-content;
+        min-height: 100vh;
+        height: auto;
+    }
+}
+
 app-side-bar {
     background: #000;
     min-width: fit-content;
@@ -6,15 +16,7 @@ app-side-bar {
     height: auto;
 }
 
-@media screen and (max-width:700px) {
-    app-side-bar {
-        background: #000;
-        min-width: fit-content;
-        width:fit-content;
-        min-height: 100vh;
-        height: auto;
-    }
-}
+
 
 app-albums {
     min-height: 100vh;

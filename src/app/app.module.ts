@@ -4,12 +4,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { JsonService } from './json.service';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AlbumsModule } from './albums/albums.module';
 import { SongsModule } from './songs/songs.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -23,9 +23,9 @@ import { SongsModule } from './songs/songs.module';
     AppRoutingModule,
     NgbModule,
     AlbumsModule,
-    SongsModule
+    SongsModule,
+    BrowserAnimationsModule
   ],
-  providers: [JsonService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
