@@ -1,4 +1,4 @@
-<h1 class="fs-1 text-center pt-4 pb-0"> {{ album.album.title }}<br><i [ngClass]="favorite ? 'fa-solid' : 'fa-regular'"
+<h1 class="fs-1 text-center pt-4 pb-0"> {{ album.album.title }}<br><i [ngClass]="isFavorite ? 'fa-solid' : 'fa-regular'"
         class="fa-heart mt-2" (click)="onToggleFavorite()"></i></h1>
 <p class="fs-4 text-center opacity-90 p-0 mt-0 mb-3">{{ album.artistName }}</p>
 <div class="album-content d-flex">
@@ -10,4 +10,5 @@
         </a>
     </div>
     <app-album-detail class="details-content w-25 px-4" [album]="album"></app-album-detail>
+    
 </div>

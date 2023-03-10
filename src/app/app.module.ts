@@ -10,6 +10,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AlbumsModule } from './albums/albums.module';
 import { SongsModule } from './songs/songs.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HomeComponent,
     PageNotFoundComponent,
   ],
+  providers:[MatSnackBar],
   imports: [
     BrowserModule,
     AppRoutingModule,

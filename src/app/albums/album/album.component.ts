@@ -3,8 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { OnInit } from '@angular/core';
 import { HttpService } from 'src/app/http/http.service';
 import { Router } from '@angular/router';
-import { Album, Song } from 'src/shared/types.interface';
+import { Song } from 'src/shared/types.interface';
 import { GlobalConstants } from 'src/shared/global.constants';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-album',
@@ -15,14 +16,14 @@ export class AlbumComponent implements OnInit {
 
   albumTitle: string = "";
   album: any;
-  favorite: boolean = false;
+  isFavorite: boolean = false;
 
-  constructor(private route: ActivatedRoute, private router: Router, private httpService: HttpService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private httpService: HttpService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.albumTitle = this.route.snapshot.params[GlobalConstants.ALBUM_TITLE_STRING];
     this.album = this.httpService.getAlbumByTitle(this.albumTitle);
-    this.favorite = this.router.url.includes('/' + GlobalConstants.FAVORITE_STRING, 0);
+    this.isFavorite = this.router.url.includes('/' + GlobalConstants.FAVORITE_STRING, 0);
   }
 
   onLoadSongByTitle(song: Song) {
@@ -30,16 +31,29 @@ export class AlbumComponent implements OnInit {
   }
 
   onToggleFavorite() {
-    this.favorite = !this.favorite;
+    this.isFavorite = !this.isFavorite;
     this.router.navigateByUrl('/' + GlobalConstants.MY_ALBUMS_STRING + '/'
       + this.route.snapshot.paramMap.get(GlobalConstants.ALBUM_TITLE_STRING)
-      + (this.favorite ? '/' + GlobalConstants.FAVORITE_STRING : '')
+      + (this.isFavorite ? '/' + GlobalConstants.FAVORITE_STRING : '')
     );
     this.httpService.postAlbumDataWithFavorite(
       this.albumTitle,
       this.album.artistName,
-      this.favorite
+      this.isFavorite
+    )
+    this.handleSnackBar();
+  }
+
+  handleSnackBar() {
+    let message = "The album '" + this.albumTitle + "' was " + (this.isFavorite ? 'added to' : 'removed from') + " favorites!"
+    let snackBarRef = this.snackBar.open(message);
+    setTimeout(() => {
+      snackBarRef.dismiss()
+    },
+      3000
     )
   }
+
+
 
 }
