@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core'
 import { RouterModule } from "@angular/router";
 import { SongComponent } from "../songs/song/song.component";
 import { SongsGuardService } from "../songs/songs.guard";
@@ -7,7 +7,7 @@ import { AlbumComponent } from "./album/album.component";
 import { AlbumsComponent } from "./albums.component";
 import { AlbumsGuardService } from "./albums.guard";
 import { AlbumDetailComponent } from './album/album-detail/album-detail.component';
-import { GlobalConstants} from "src/shared/global.constants";
+import { GlobalConstants } from "src/shared/global.constants";
 
 @NgModule({
     declarations: [
