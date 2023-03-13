@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { GlobalConstants } from 'src/shared/global.constants';
+import { GlobalConstants } from 'src/shared/global-constants.enum';
 import { Album } from 'src/shared/types.interface';
 import { HttpService } from '../http/http.service';
 

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
 import { Observable } from "rxjs";
-import { GlobalConstants } from "src/shared/global.constants";
+import { GlobalConstants } from "src/shared/global-constants.enum";
 import { HttpService } from "../http/http.service";
 
 @Injectable()

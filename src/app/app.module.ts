@@ -11,6 +11,7 @@ import { AlbumsModule } from './albums/albums.module';
 import { SongsModule } from './songs/songs.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { FavoritesComponent } from './favorites/favorites.component';
 
 @NgModule({
@@ -21,14 +22,15 @@ import { FavoritesComponent } from './favorites/favorites.component';
     PageNotFoundComponent,
     FavoritesComponent,
   ],
-  providers:[MatSnackBar],
+  providers: [MatSnackBar, MatTooltip],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     AlbumsModule,
     SongsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatTooltipModule
   ],
   bootstrap: [AppComponent]
 })

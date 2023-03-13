@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/http/http.service';
-import { GlobalConstants } from 'src/shared/global.constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { GlobalConstants } from 'src/shared/global-constants.enum';
 
 @Component({
   selector: 'app-song',

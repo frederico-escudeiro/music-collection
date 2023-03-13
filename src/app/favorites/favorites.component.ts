@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { Song, Album } from 'src/shared/types.interface';
 import { HttpService } from '../http/http.service';
+import { Router } from '@angular/router';
+import { GlobalConstants } from 'src/shared/global-constants.enum';
 
 @Component({
   selector: 'app-favorites',
@@ -8,10 +9,32 @@ import { HttpService } from '../http/http.service';
   styleUrls: ['./favorites.component.scss']
 })
 export class FavoritesComponent {
-  favorites: (Album | Song)[];
+  favorites: any[];
+  readonly songTypeConstant: string = GlobalConstants.SONG_TYPE;
 
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService, private router: Router) {
     this.favorites = this.httpService.getFavoritesData();
   }
 
+  onRemoveFavorite(item: any) {
+    if (item.type === 'song') {
+      this.router.navigate([
+        '/'
+        + GlobalConstants.MY_ALBUMS_STRING
+        + '/'
+        + item.albumTitle
+        + '/'
+        + item.songTitle
+        + '/'
+        + GlobalConstants.FAVORITE_STRING]) //Assume que na aba dos favorites tudo é favorito.
+    } else {
+      this.router.navigate([
+        '/'
+        + GlobalConstants.MY_ALBUMS_STRING
+        + '/'
+        + item.albumTitle
+        + '/'
+        + GlobalConstants.FAVORITE_STRING])
+    }
+  }
 }

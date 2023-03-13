@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import jsonData from '../../assets/json/artists_albuns.json';
-import { Song, Album , Artist } from 'src/shared/types.interface';
+import { Song, Album, Artist } from 'src/shared/types.interface';
+import { GlobalConstants } from 'src/shared/global-constants.enum';
 
 
 
@@ -60,7 +61,7 @@ export class HttpService {
 
   getSongData() {
     var songs: {
-      song:Song,
+      song: Song,
       artistName: string,
       albumTitle: string
     }[] = [];
@@ -69,7 +70,7 @@ export class HttpService {
         for (let song of album.songs) {
           songs.push(
             {
-              song:<Song>song,
+              song: <Song>song,
               artistName: artist.name,
               albumTitle: album.title
             });
@@ -95,17 +96,34 @@ export class HttpService {
     return null;
   }
 
-  getFavoritesData(){
-    let favorites: (Album | Song)[] =[];
-    
-    for(let artist of collectionArray){
-      for(let album of artist.albums){
-        if(album.favorite){
-          favorites.push(album);
+  getFavoritesData() {
+    let favorites: (
+      {
+        type: string,
+        songTitle?: string,
+        albumTitle: string,
+        artistName: string
+      })[] = [];
+
+    for (let artist of collectionArray) {
+      for (let album of artist.albums) {
+        if (album.favorite) {
+          favorites.push(
+            {
+              type: GlobalConstants.ALBUM_TYPE,
+              albumTitle: album.title,
+              artistName: artist.name
+            });
         }
-        for( let song of album.songs){
-          if(song.favorite){
-            favorites.push(song);
+        for (let song of album.songs) {
+          if (song.favorite) {
+            favorites.push(
+              {
+                type: GlobalConstants.SONG_TYPE,
+                songTitle: song.title,
+                albumTitle: album.title,
+                artistName: artist.name
+              });
           }
         }
       }
@@ -113,17 +131,17 @@ export class HttpService {
     return favorites;
   }
 
-  postSongDataWithFavorite(songTitle: string, albumTitle: string, artistName: string,  isFavorite: boolean) {
+  postSongDataWithFavorite(songTitle: string, albumTitle: string, artistName: string, setFavorite: boolean) {
 
     let songToUpdate = collectionArray
       .find(artist => artist.name === artistName)
       ?.albums.find(album => album.title === albumTitle)
       ?.songs.filter(song => song.title === songTitle)[0];
 
-    let favoriteSong:Song = {
+    let favoriteSong: Song = {
       title: songToUpdate?.title !== undefined ? songToUpdate.title : '',
       length: songToUpdate?.length !== undefined ? songToUpdate.length : '',
-      favorite: isFavorite
+      favorite: setFavorite
     }
 
     for (let artist of collectionArray) {
@@ -145,7 +163,7 @@ export class HttpService {
       .find(artist => artist.name === artistName)
       ?.albums.filter(album => album.title === albumTitle)[0];
 
-    let favoriteAlbum:Album = {
+    let favoriteAlbum: Album = {
       title: albumToUpdate?.title ? albumToUpdate.title : '',
       description: albumToUpdate?.description ? albumToUpdate.description : '',
       songs: albumToUpdate?.songs ? albumToUpdate.songs : [],
@@ -154,13 +172,12 @@ export class HttpService {
 
     for (let artist of collectionArray) {
       for (let album of artist.albums) {
-          if (album === albumToUpdate) {
-            artist.albums[artist.albums.indexOf(album)] = favoriteAlbum;
-            collectionArray[collectionArray.indexOf(artist)] = artist;
+        if (album === albumToUpdate) {
+          artist.albums[artist.albums.indexOf(album)] = favoriteAlbum;
+          collectionArray[collectionArray.indexOf(artist)] = artist;
         }
       }
     }
   }
-
 
 }
