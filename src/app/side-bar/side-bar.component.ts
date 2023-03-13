@@ -26,6 +26,10 @@ export class SideBarComponent {
     })
   }
 
+  onLoadArtists(){
+    this.router.navigate(['/']);
+  }
+
   onLoadAlbums() {
     this.router.navigate(['/' + GlobalConstants.MY_ALBUMS_STRING]);
   }
@@ -37,5 +41,7 @@ export class SideBarComponent {
   onLoadFavorites() {
     this.router.navigate(['/' + GlobalConstants.MY_FAVORITES_STRING]);
   }
+
+  
 
 }

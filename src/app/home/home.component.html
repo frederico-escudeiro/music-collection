@@ -1,3 +1,22 @@
 <h1 class="fs-1 text-center py-4">Home</h1>
 <p class="fs-5 text-center py-4">Welcome to your music collection!</p>
-<p class="text-center">(Select an item at the side bar to check your albums and songs)</p>
+<hr>
+<h3 class="fs-3 text-center py-4">My Artists</h3>
+<mat-accordion *ngFor="let artist of artists">
+    <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+            <mat-panel-title class="fs-4">
+                {{ artist.name }}
+            </mat-panel-title>
+            <mat-panel-description>
+                This is a summary of the content
+            </mat-panel-description>
+
+        </mat-expansion-panel-header>
+        <div class="d-flex">
+            <h3 class="text-strong">Albums</h3>
+            <p *ngFor="let album of artist.albums">{{ album.title }}</p>
+            <button mat-button matTooltip="Add new Album"><i class="fa-solid fa-user-plus"></i></button>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>

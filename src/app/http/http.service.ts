@@ -12,6 +12,10 @@ let collectionArray: Artist[] = jsonData;
 })
 export class HttpService {
 
+  getArtistsData() {
+    return collectionArray;
+  }
+
   getAlbumsData() {
     var artistAlbums: {
       album: Album,

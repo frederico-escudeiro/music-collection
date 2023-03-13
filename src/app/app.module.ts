@@ -12,7 +12,9 @@ import { SongsModule } from './songs/songs.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { FavoritesComponent } from './favorites/favorites.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { FavoritesComponent } from './favorites/favorites.component';
     AlbumsModule,
     SongsModule,
     BrowserAnimationsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatExpansionModule,
+    MatButtonModule
   ],
   bootstrap: [AppComponent]
 })
