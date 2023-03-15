@@ -2,21 +2,19 @@
 <p class="fs-5 text-center py-4">Welcome to your music collection!</p>
 <hr>
 <h3 class="fs-3 text-center py-4">My Artists</h3>
-<mat-accordion *ngFor="let artist of artists">
-    <mat-expansion-panel hideToggle>
+
+<mat-accordion #active>
+    <mat-expansion-panel *ngFor="let artist of artists" hideToggle>
         <mat-expansion-panel-header>
-            <mat-panel-title class="fs-4">
+            <mat-panel-title class="fs-5">
                 {{ artist.name }}
             </mat-panel-title>
-            <mat-panel-description>
-                This is a summary of the content
-            </mat-panel-description>
-
         </mat-expansion-panel-header>
-        <div class="d-flex">
-            <h3 class="text-strong">Albums</h3>
+        <div fxLayout="column">
+            <h3>Albums</h3>
             <p *ngFor="let album of artist.albums">{{ album.title }}</p>
-            <button mat-button matTooltip="Add new Album"><i class="fa-solid fa-user-plus"></i></button>
+            <button mat-button matTooltip="Add new Album" (click)="onAddNewAlbum(artist)"><i class="fa-solid fa-user-plus"></i></button>
         </div>
     </mat-expansion-panel>
 </mat-accordion>
+<app-add-album *ngIf="isAddingAlbum" [artist]="selectedArtist" (closeModal)="onStopAdding()"></app-add-album>

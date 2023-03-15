@@ -16,3 +16,12 @@ export interface Song {
     favorite?: boolean
 }
 
+export class Album implements Album {
+    constructor(title: string, description: string, songs: Song[]) {
+        this.title = title;
+        this.songs = songs;
+        this.description = description;
+    }
+}
+
+

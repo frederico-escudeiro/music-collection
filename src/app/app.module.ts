@@ -15,6 +15,13 @@ import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { MatButtonModule } from '@angular/material/button';
+import { AddAlbumComponent } from './home/add-album/add-album.component';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -23,6 +30,7 @@ import { MatButtonModule } from '@angular/material/button';
     HomeComponent,
     PageNotFoundComponent,
     FavoritesComponent,
+    AddAlbumComponent
   ],
   providers: [MatSnackBar, MatTooltip],
   imports: [
@@ -34,7 +42,13 @@ import { MatButtonModule } from '@angular/material/button';
     BrowserAnimationsModule,
     MatTooltipModule,
     MatExpansionModule,
-    MatButtonModule
+    MatButtonModule,
+    FormsModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ScrollingModule,
+    ReactiveFormsModule,
+    MatListModule
   ],
   bootstrap: [AppComponent]
 })

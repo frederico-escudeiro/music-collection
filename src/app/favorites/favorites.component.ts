@@ -10,7 +10,7 @@ import { GlobalConstants } from 'src/shared/global-constants.enum';
 })
 export class FavoritesComponent {
   favorites: any[];
-  readonly songTypeConstant: string = GlobalConstants.SONG_TYPE;
+  readonly songTypeConstant: string = GlobalConstants.SONG_TYPE_STRING;
 
   constructor(private httpService: HttpService, private router: Router) {
     this.favorites = this.httpService.getFavoritesData();
