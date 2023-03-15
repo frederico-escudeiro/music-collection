@@ -1,27 +1,19 @@
-<div class="backdrop" (click)="onCloseModal()"></div>
-<div class="new-album-box" cdkVirtualScrollingElement>
-    <cdk-virtual-scroll-viewport itemSize="1">
-        <form [formGroup]="newAlbumForm" (ngSubmit)="onCreateAlbum()" class="form-layout">
-            <h4 class="fs-4">Create Album for {{ artist.name }}</h4>
-            <mat-form-field class="form-controls">
-                <mat-label appearance="fill" for="title">Title</mat-label>
-                <input formControlName="title" matInput type="text" id="title" name="title">
-            </mat-form-field>
-            <mat-form-field class="form-controls">
-                <mat-label appearance="fill" for="description">Description</mat-label>
-                <textarea formControlName="description" matInput id="description"></textarea>
-            </mat-form-field>
-            
-                <mat-label appearance="fill" for="arraySongs">Songs</mat-label>
-                <mat-list id="arraySongs">
-                    <mat-list-item>Dummy Values</mat-list-item>
-                    <mat-list-item>Salt</mat-list-item>
-                    <mat-list-item>Paprika</mat-list-item>
-                </mat-list>
-            
-
-
-            <button type="submit" class="button-fixed" mat-button>Create Album</button>
-        </form>
-    </cdk-virtual-scroll-viewport>
-</div>
+<h1 mat-dialog-title>Create Album of {{ artist.name }}</h1>
+<form [formGroup]="newAlbumForm" (ngSubmit)="onCreateAlbum()">
+  <div mat-dialog-content class="flexing">
+    <mat-form-field appearance="fill">
+      <mat-label>Album Title</mat-label>
+      <input type="text" matInput formControlName="title">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Album Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+    <!-- TODO: ArrayForm -->
+    
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">No Thanks</button>
+    <button mat-button type="submit" [mat-dialog-close]="onCreateAlbum()" cdkFocusInitial>Ok</button>
+  </div>
+</form>
