@@ -13,7 +13,9 @@
         <div fxLayout="column">
             <h3>Albums</h3>
             <p *ngFor="let album of artist.albums">{{ album.title }}</p>
-            <button mat-button matTooltip="Add new Album" (click)="openDialog(artist)"><i class="fa-solid fa-user-plus"></i></button>
+            <button mat-button matTooltip="Add new Album" (click)="openDialog(artist)">
+                <span class="material-symbols-rounded">add_circle</span>
+            </button>
         </div>
     </mat-expansion-panel>
 </mat-accordion>

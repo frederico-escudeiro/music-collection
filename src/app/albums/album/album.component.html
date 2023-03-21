@@ -1,5 +1,8 @@
-<h1 class="fs-1 text-center pt-4 pb-0"> {{ album.album.title }}<br><i [ngClass]="isFavorite ? 'fa-solid' : 'fa-regular'"
-        class="fa-heart mt-2" (click)="onToggleFavorite()"></i></h1>
+<h1 class="fs-1 text-center pt-4 pb-0"> {{ album.album.title }}<br>
+    <span class="material-symbols-rounded" [ngClass]="isFavorite ? 'fill' : ''" (click)="onToggleFavorite()">
+        favorite
+    </span>
+</h1>
 <p class="fs-4 text-center opacity-90 p-0 mt-0 mb-3">{{ album.artistName }}</p>
 <div class="album-content d-flex">
     <div class="list-group mx-2 flex-grow-1">

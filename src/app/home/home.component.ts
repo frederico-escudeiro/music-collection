@@ -22,7 +22,7 @@ export class HomeComponent {
     const dialogRef = this.dialog.open(AddAlbumComponent, { data: artist });
 
     dialogRef.afterClosed().subscribe(result => {
-      let createdAlbum = result;
+      let createdAlbum:Album = result;
       let message = "";
       if (createdAlbum !== undefined && !this.httpService.existsDuplicateAlbum(createdAlbum.title)) {
         createdAlbum = this.httpService.filterDuplicateSongsInAlbum(createdAlbum);

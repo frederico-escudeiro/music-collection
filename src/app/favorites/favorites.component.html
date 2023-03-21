@@ -7,7 +7,9 @@
         <span *ngIf="favorite.type !== songTypeConstant" class="fs-5 mb-0 flex-grow-1 m-2">{{ favorite.albumTitle
             }}</span>
         <p class="opacity-90 m-2">{{ favorite.type.toUpperCase() }}</p>
-        <i class="fa-solid fa-heart fa-regular m-1"></i>
+        <span class="material-symbols-rounded">
+            favorite
+        </span>
     </a>
 </div>
 <div class="mx-2 text-center" *ngIf="favorites.length === 0">

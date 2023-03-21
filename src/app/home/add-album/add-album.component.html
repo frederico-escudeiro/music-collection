@@ -26,8 +26,11 @@
 			<div fxLayout="column" fxLayoutAlign="space-between stretch">
 				<div fxLayout="row" fxLayoutAlign="space-between center" class="breathing-room-top breathing-room-bot">
 					<h3 fxFlex>Add a new Song!</h3>
-					<button type="button" mat-fab color="primary" fxFlexAlign="end"
-						(click)="onAddSongControl()">+</button>
+					<button type="button" mat-fab color="primary" fxFlexAlign="end" (click)="onAddSongControl()">
+						<span class="material-symbols-rounded">
+							add
+						</span>
+					</button>
 				</div>
 				<hr>
 				<div *ngIf="getSongArray.controls.length > -1" formArrayName="songs">
@@ -50,7 +53,11 @@
 							<p *ngIf="!getSongArray.get(''+index)?.get('length')?.valid && getSongArray.get(''+index)?.get('length')?.touched"
 								class="red-color" noFlex>Please introduce a Song length with the format 59:59</p>
 						</div>
-						<button type="button" mat-fab color="warn" (click)="onRemoveSongControl(index)">-</button>
+						<button type="button" mat-fab color="warn" (click)="onRemoveSongControl(index)">
+							<span class="material-symbols-rounded">
+								remove
+							</span>
+						</button>
 					</div>
 				</div>
 				<div fxLayout="row" fxLayoutAlign="space-between stretch">

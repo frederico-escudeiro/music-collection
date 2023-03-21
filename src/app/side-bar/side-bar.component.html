@@ -1,31 +1,39 @@
-<div class="container">
-  <div routerLink="/" class="header-box">
-    <h1 class="fs-2 text-center text-white my-3">
-      <i class="fa-solid fa-layer-group px-2"></i>
-      <span class="responsive">My Collection</span>
+<div>
+  <div routerLink="/">
+    <h1>
+      <span class="material-symbols-rounded">
+        library_music
+      </span>
+      <span id="collection" class="responsive">My Collection</span>
     </h1>
   </div>
-  <hr class="m-0 text-white">
-  <ul class="list-unstyled px-2 py-3">
-    <li (click)="onLoadArtists()" class="m-2 py-2 text-center" (mouseover)="tooltipArtists.show()" matTooltipPosition="right"
-    matTooltip="My Albums" #tooltipArtists="matTooltip" [matTooltipDisabled]="isTooltipEnabled">
-    <i class="fa-solid fa-users px-2"></i>
-    <a class="fs-5 text-decoration-none text-white responsive">My Artists</a>
-  </li>
-    <li (click)="onLoadAlbums()" class="m-2 py-2 text-center" (mouseover)="tooltipAlbums.show()" matTooltipPosition="right"
-      matTooltip="My Albums" #tooltipAlbums="matTooltip" [matTooltipDisabled]="isTooltipEnabled">
-      <i class="fa-solid fa-record-vinyl px-2"></i>
-      <a class="fs-5 text-decoration-none text-white responsive">My Albums</a>
+  <hr>
+  <ul>
+    <li (click)="onLoadArtists()" (mouseover)="tooltipArtists.show()" matTooltipPosition="right" matTooltip="My Albums"
+      #tooltipArtists="matTooltip" [matTooltipDisabled]="isTooltipEnabled">
+      <span class="material-symbols-rounded">groups</span>
+      <a class="responsive">My Artists</a>
     </li>
-    <li (click)="onLoadSongs()" class="m-2 py-2 text-center" (mouseover)="tooltipSongs.show()" matTooltipPosition="right"
-      matTooltip="My Songs" #tooltipSongs="matTooltip" [matTooltipDisabled]="isTooltipEnabled">
-      <i class="fa-solid fa-music px-2"></i>
-      <a class="fs-5 text-decoration-none text-white responsive">My Songs</a>
+    <li (click)="onLoadAlbums()" (mouseover)="tooltipAlbums.show()" matTooltipPosition="right" matTooltip="My Albums"
+      #tooltipAlbums="matTooltip" [matTooltipDisabled]="isTooltipEnabled">
+      <span class="material-symbols-rounded">
+        album
+      </span>
+      <a class="responsive">My Albums</a>
     </li>
-    <li (click)="onLoadFavorites()" class="m-2 py-2 text-center" (mouseover)="tooltipFavorites.show()" matTooltipPosition="right"
+    <li (click)="onLoadSongs()" (mouseover)="tooltipSongs.show()" matTooltipPosition="right" matTooltip="My Songs"
+      #tooltipSongs="matTooltip" [matTooltipDisabled]="isTooltipEnabled">
+      <span class="material-symbols-rounded">
+        music_note
+      </span>
+      <a class="responsive">My Songs</a>
+    </li>
+    <li (click)="onLoadFavorites()" (mouseover)="tooltipFavorites.show()" matTooltipPosition="right"
       matTooltip="My Favorites" #tooltipFavorites="matTooltip" [matTooltipDisabled]="isTooltipEnabled">
-      <i class="fa-solid fa-heart px-2"></i>
-      <a class="fs-5 text-decoration-none text-white responsive">My Favorites</a>
+      <span class="material-symbols-rounded">
+        favorite
+      </span>
+      <a class="responsive">My Favorites</a>
     </li>
   </ul>
 </div>

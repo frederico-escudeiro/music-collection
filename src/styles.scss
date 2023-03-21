@@ -7,8 +7,29 @@ app-favorites,
 app-home,
 app-songs,
 app-song,
-app-page-not-found{
+app-page-not-found {
     flex-grow: 1;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 600,
+        'GRAD' 0,
+        'opsz' 48
+}
+
+.fill {
+    font-variation-settings:
+        'FILL' 1
+}

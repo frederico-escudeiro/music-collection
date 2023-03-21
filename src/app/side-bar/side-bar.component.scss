@@ -1,27 +1,58 @@
 @media screen and (max-width:700px) {
-  .responsive{
-    display:none;
+  .responsive {
+    display: none;
   }
 }
 
-.header-box{
+hr{
+  color:white;
+  margin: 12px;
+}
+
+h1{
+  text-align: center;
   cursor: pointer;
+  margin: 0;
+  padding:0;
 }
 
-li{
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-i{
+h1 span{
   color: #f6aa1c;
+  font-size: 32px;
 }
 
-li:hover{
+ul {
+  padding: 0 12px;
+}
+
+li {
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: start;
+}
+
+span {
+  color: #f6aa1c;
+  padding:12px;
+  font-size: 24px;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+  padding: 12px;
+}
+
+li:hover {
   background-color: #f6aa1c;
 }
 
-li:hover i{
+li:hover span {
   color: black;
 }
 
+#collection{
+  color:white;
+  font-size: 28px;
+}
