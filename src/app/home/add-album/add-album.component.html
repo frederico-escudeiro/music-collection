@@ -1,6 +1,6 @@
-<h1 mat-dialog-title>Create Album of {{ artist.name }}</h1>
+<!-- <h1 mat-dialog-title>Create Album of {{ artist.name }}</h1>
 <form [formGroup]="newAlbumForm" (ngSubmit)="onCreateAlbum()">
-  <div mat-dialog-content class="flexing">
+  <div mat-dialog-content fxLayout="column" fxLayoutAlign="space-around center">
     <mat-form-field appearance="fill">
       <mat-label>Album Title</mat-label>
       <input type="text" matInput formControlName="title">
@@ -9,11 +9,59 @@
       <mat-label>Album Description</mat-label>
       <textarea matInput formControlName="description"></textarea>
     </mat-form-field>
-    <!-- TODO: ArrayForm -->
-    
   </div>
   <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">No Thanks</button>
     <button mat-button type="submit" [mat-dialog-close]="onCreateAlbum()" cdkFocusInitial>Ok</button>
   </div>
+</form> -->
+<form [formGroup]="formGroup" (ngSubmit)="onCreateAlbum()">
+	<mat-stepper linear #stepper>
+		<mat-step [stepControl]="formGroup">
+			<ng-template matStepLabel>Album basic information</ng-template>
+			<div fxLayout="column" fxLayoutAlign="space-around stretch" class="breathing-room-top">
+				<h3>New Album</h3>
+				<mat-form-field appearance="fill">
+					<mat-label>Title</mat-label>
+					<input matInput placeholder="Title" formControlName="title" required>
+				</mat-form-field>
+
+				<mat-form-field appearance="fill">
+					<mat-label>Description</mat-label>
+					<input matInput placeholder="Description" formControlName="description" required>
+				</mat-form-field>
+
+				<button type="button" mat-button matStepperNext fxFlexAlign="end">Next</button>
+			</div>
+
+		</mat-step>
+		<mat-step [stepControl]="formGroup" label="Fill out the Album's songs">
+			<div fxLayout="column" fxLayoutAlign="space-between stretch">
+				<div fxLayout="row" fxLayoutAlign="space-between center" class="breathing-room-top breathing-room-bot">
+					<h3 fxFlex>Add a new Song!</h3>
+					<button type="button" mat-fab color="primary" fxFlexAlign="end"
+						(click)="onAddSongControl()">+</button>
+				</div>
+				<hr>
+				<div *ngIf="getSongArray.controls.length > -1" formArrayName="songs">
+					<div fxLayout="row" fxLayoutAlign="space-between start"
+						*ngFor="let songControl of getSongArray.controls; let index = index" [formGroupName]="index">
+						<mat-form-field fxFlex="55">
+							<mat-label for="songTitle">Song Title</mat-label>
+							<input type="text" matInput id="songTitle" formControlName="title">
+						</mat-form-field>
+						<mat-form-field fxFlex="30">
+							<mat-label for="songLength">Song Length</mat-label>
+							<input type="text" matInput id="songLength" formControlName="length">
+						</mat-form-field>
+						<button type="button" mat-fab color="warn" (click)="onRemoveSongControl(index)">-</button>
+					</div>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="space-between stretch">
+					<button type="button" mat-button matStepperPrevious>Back</button>
+					<button type="submit" mat-button color="primary" matStepperNext fxFlexAlign="end">Add Album</button>
+				</div>
+			</div>
+		</mat-step>
+	</mat-stepper>
 </form>

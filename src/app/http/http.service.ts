@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import jsonData from '../../assets/json/artists_albuns.json';
-import { Song, Album, Artist } from 'src/shared/types.model';
-import { GlobalConstants } from 'src/shared/global-constants.enum';
+import { Song, Album, Artist } from 'src/app/shared/types.model';
+import { GlobalConstants } from 'src/app/shared/global-constants.enum';
 
 
 
@@ -139,8 +139,8 @@ export class HttpService {
 
     let songToUpdate = collectionArray
       .find(artist => artist.name === artistName)
-      ?.albums.find(album => album.title === albumTitle)
-      ?.songs.filter(song => song.title === songTitle)[0];
+      ?.albums.find((album: Album) => album.title === albumTitle)
+      ?.songs.filter((song: Song) => song.title === songTitle)[0];
 
     let favoriteSong: Song = {
       title: songToUpdate?.title !== undefined ? songToUpdate.title : '',
@@ -163,8 +163,8 @@ export class HttpService {
 
   postAlbumDataWithFavorite(albumTitle: string, artistName: string, isFavorite: boolean) {
     let albumToUpdate = collectionArray
-      .find(artist => artist.name === artistName)
-      ?.albums.filter(album => album.title === albumTitle)[0];
+      .find(artist => artist.name === artistName)?.albums
+      .filter(album => album.title === albumTitle)[0];
 
     let favoriteAlbum: Album = {
       title: albumToUpdate?.title ? albumToUpdate.title : '',
@@ -184,13 +184,13 @@ export class HttpService {
   }
 
   postNewAlbumData(newAlbum: Album, selectedArtist: Artist) {
-    let newAlbumIndex = 0;
     for (let artist of collectionArray) {
       if (selectedArtist === artist) {
         artist.albums.push(newAlbum);
         collectionArray[collectionArray.indexOf(artist)] = artist;
       }
     }
+    console.log(collectionArray);
   }
 
 }

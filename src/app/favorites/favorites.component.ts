@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpService } from '../http/http.service';
 import { Router } from '@angular/router';
-import { GlobalConstants } from 'src/shared/global-constants.enum';
+import { GlobalConstants } from 'src/app/shared/global-constants.enum';
 
 @Component({
   selector: 'app-favorites',

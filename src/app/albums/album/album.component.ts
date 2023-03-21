@@ -3,9 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { OnInit } from '@angular/core';
 import { HttpService } from 'src/app/http/http.service';
 import { Router } from '@angular/router';
-import { Song } from 'src/shared/types.model';
+import { Song } from 'src/app/shared/types.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { GlobalConstants } from 'src/shared/global-constants.enum';
+import { GlobalConstants } from 'src/app/shared/global-constants.enum';
 
 @Component({
   selector: 'app-album',

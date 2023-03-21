@@ -2,7 +2,7 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { Component, ViewChild } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
-import { GlobalConstants } from 'src/shared/global-constants.enum';
+import { GlobalConstants } from 'src/app/shared/global-constants.enum';
 import { OnDestroy } from '@angular/core';
 
 @Component({

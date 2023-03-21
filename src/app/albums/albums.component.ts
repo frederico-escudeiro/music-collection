@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { GlobalConstants } from 'src/shared/global-constants.enum';
-import { Album } from 'src/shared/types.model';
+import { GlobalConstants } from 'src/app/shared/global-constants.enum';
+import { Album } from 'src/app/shared/types.model';
 import { HttpService } from '../http/http.service';
 
 @Component({

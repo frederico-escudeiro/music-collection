@@ -1,10 +1,6 @@
-import { Component, ElementRef, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatAccordion, MatExpansionPanel } from '@angular/material/expansion';
-import { Sort } from '@angular/material/sort';
-import { Router } from '@angular/router';
-import { GlobalConstants } from 'src/shared/global-constants.enum';
-import { Album, Artist } from 'src/shared/types.model';
+import { Album, Artist } from 'src/app/shared/types.model';
 import { HttpService } from '../http/http.service';
 import { AddAlbumComponent } from './add-album/add-album.component';
 

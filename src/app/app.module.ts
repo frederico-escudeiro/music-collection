@@ -12,6 +12,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatStepperModule } from '@angular/material/stepper';
+
 import { AlbumsModule } from './albums/albums.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,8 +26,6 @@ import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { SongsModule } from './songs/songs.module';
-import {MatCardModule} from '@angular/material/card';
-import MatDialog, { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,9 @@ import MatDialog, { MatDialogModule } from '@angular/material/dialog';
     ReactiveFormsModule,
     MatListModule,
     MatCardModule,
-    MatDialogModule
+    MatDialogModule,
+    FlexLayoutModule,
+    MatStepperModule
   ],
   bootstrap: [AppComponent]
 })
