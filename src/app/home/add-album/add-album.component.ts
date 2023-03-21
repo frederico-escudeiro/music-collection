@@ -67,4 +67,6 @@ export class AddAlbumComponent {
 	get getSongArray() {
 		return (((<FormArray>this.formGroup.get('songs'))));
 	}
+
+	
 }

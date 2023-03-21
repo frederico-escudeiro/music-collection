@@ -193,4 +193,14 @@ export class HttpService {
     console.log(collectionArray);
   }
 
+  existsDuplicateAlbum(albumTitle: string): boolean {
+    for (let artist of collectionArray) {
+      for (let album of artist.albums) {
+        if (album.title === albumTitle) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }
