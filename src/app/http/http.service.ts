@@ -12,6 +12,7 @@ let collectionArray: Artist[] = jsonData;
 })
 export class HttpService {
 
+
   getArtistsData() {
     return collectionArray;
   }
@@ -190,7 +191,6 @@ export class HttpService {
         collectionArray[collectionArray.indexOf(artist)] = artist;
       }
     }
-    console.log(collectionArray);
   }
 
   existsDuplicateAlbum(albumTitle: string): boolean {
@@ -202,5 +202,18 @@ export class HttpService {
       }
     }
     return false;
+  }
+
+  filterDuplicateSongsInAlbum(createdAlbum: Album): Album {
+    let result: Album = createdAlbum;
+    for (let artist of collectionArray) {
+      for (let album of artist.albums) {
+        for (let song of album.songs) {
+               result = new Album(createdAlbum.title, createdAlbum.description, createdAlbum.songs.filter(s => s.title === song.title));
+         }
+      }
+    }
+    return result;
+
   }
 }

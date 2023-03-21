@@ -11,7 +11,6 @@ import { HomeComponent } from '../home.component';
 	styleUrls: ['./add-album.component.scss']
 })
 export class AddAlbumComponent {
-	album!: Album;
 	formGroup: FormGroup;
 
 	constructor(public dialogRef: MatDialogRef<HomeComponent>, @Inject(MAT_DIALOG_DATA) public artist: Artist) {
@@ -30,13 +29,12 @@ export class AddAlbumComponent {
 
 	onAddSongControl() {
 		const songControl = new FormGroup({
-			title: new FormControl(null),
-			length: new FormControl(null)
+			title: new FormControl(null, Validators.required),
+			length: new FormControl(null, [Validators.pattern("^[0-5]?[0-9]:[0-5][0-9]$"), Validators.required])
 		}, Validators.required);
 
-		(<FormArray>this.formGroup.get('songs')).push(songControl);
+		this.getSongArray.push(songControl);
 
-		console.log(this.getSongArray);
 		// const control = this.fb.group({
 		// 	title: '',
 		// 	length: '',
@@ -49,15 +47,12 @@ export class AddAlbumComponent {
 	}
 
 	onCreateAlbum() {
-		this.album =
+		const album =
 			new Album(
 				this.formGroup.get('title')?.value,
 				this.formGroup.get('description')?.value,
 				this.getSongArray.value);
-		this.dialogRef.close(this.album);
-
-		console.log(this.getSongArray.value);
-		console.log(this.formGroup);
+		this.dialogRef.close(album);
 	}
 
 	onNoClick(): void {
@@ -68,5 +63,5 @@ export class AddAlbumComponent {
 		return (((<FormArray>this.formGroup.get('songs'))));
 	}
 
-	
+
 }
