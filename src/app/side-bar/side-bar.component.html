@@ -7,33 +7,30 @@
       <span id="collection" class="responsive">My Collection</span>
     </h1>
   </div>
-  <hr>
-  <ul>
-    <li (click)="onLoadArtists()" (mouseover)="tooltipArtists.show()" matTooltipPosition="right" matTooltip="My Albums"
-      #tooltipArtists="matTooltip" [matTooltipDisabled]="isTooltipEnabled">
+  <mat-divider></mat-divider>
+
+  <mat-list>
+    <mat-list-item (click)="onLoadArtists()" (mouseover)="tooltipArtists.show()" matTooltipPosition="right"
+      matTooltip="My Artists" #tooltipArtists="matTooltip" [matTooltipDisabled]="isTooltipEnabled">
       <span class="material-symbols-rounded">groups</span>
       <a class="responsive">My Artists</a>
-    </li>
-    <li (click)="onLoadAlbums()" (mouseover)="tooltipAlbums.show()" matTooltipPosition="right" matTooltip="My Albums"
-      #tooltipAlbums="matTooltip" [matTooltipDisabled]="isTooltipEnabled">
-      <span class="material-symbols-rounded">
-        album
-      </span>
+    </mat-list-item>
+    <mat-list-item (click)="onLoadAlbums()" (mouseover)="tooltipAlbums.show()" matTooltipPosition="right"
+      matTooltip="My Albums" #tooltipAlbums="matTooltip" [matTooltipDisabled]="isTooltipEnabled">
+      <span class="material-symbols-rounded">album</span>
       <a class="responsive">My Albums</a>
-    </li>
-    <li (click)="onLoadSongs()" (mouseover)="tooltipSongs.show()" matTooltipPosition="right" matTooltip="My Songs"
-      #tooltipSongs="matTooltip" [matTooltipDisabled]="isTooltipEnabled">
-      <span class="material-symbols-rounded">
-        music_note
-      </span>
+    </mat-list-item>
+    <mat-list-item (click)="onLoadSongs()" (mouseover)="tooltipSongs.show()" matTooltipPosition="right"
+      matTooltip="My Songs" #tooltipSongs="matTooltip" [matTooltipDisabled]="isTooltipEnabled">
+      <span class="material-symbols-rounded">music_note</span>
       <a class="responsive">My Songs</a>
-    </li>
-    <li (click)="onLoadFavorites()" (mouseover)="tooltipFavorites.show()" matTooltipPosition="right"
+    </mat-list-item>
+    <mat-list-item (click)="onLoadFavorites()" (mouseover)="tooltipFavorites.show()" matTooltipPosition="right"
       matTooltip="My Favorites" #tooltipFavorites="matTooltip" [matTooltipDisabled]="isTooltipEnabled">
       <span class="material-symbols-rounded">
         favorite
       </span>
       <a class="responsive">My Favorites</a>
-    </li>
-  </ul>
+    </mat-list-item>
+  </mat-list>
 </div>

@@ -1,10 +1,28 @@
-@media screen and (max-width:700px) {
-    div {
-        font-size: small;
-    }
+h1 {
+    font-size: 36px;
+    margin: 5px;
 }
 
-span {
+span{
     color: #f6aa1c;
-    cursor: pointer;
+    cursor:pointer;
+    font-size: 36px;
+}
+
+mat-card{
+    max-width: 60vw;
+    width: 350px;
+    margin: 20px;
+}
+
+mat-list {
+    margin: 0 0 0 10px;
+}
+
+mat-list-item{
+    padding: 0 20px 0;
+}
+
+mat-divider {
+    margin: 2px 10px 25px;
 }

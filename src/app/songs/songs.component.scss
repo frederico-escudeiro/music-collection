@@ -1,4 +1,21 @@
-a:hover {
+h1 {
+  font-size: 36px;
+  margin: 5px 5px 60px;
+}
+
+mat-divider {
+  margin: 2px 10px 25px;
+}
+
+mat-list {
+  margin: 0 10px 0;
+}
+
+mat-list-item, h3{
+  padding: 0 0 0 20px;
+}
+
+mat-list-item:hover {
   background-color: #f6aa1c;
   color: white;
   cursor: pointer;

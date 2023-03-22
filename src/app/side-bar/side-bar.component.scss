@@ -4,7 +4,7 @@
   }
 }
 
-hr{
+mat-divider{
   color:white;
   margin: 12px;
 }
@@ -25,11 +25,6 @@ ul {
   padding: 0 12px;
 }
 
-li {
-  border-radius: 4px;
-  cursor: pointer;
-  text-align: start;
-}
 
 span {
   color: #f6aa1c;
@@ -44,11 +39,12 @@ a {
   padding: 12px;
 }
 
-li:hover {
+mat-list-item:hover {
   background-color: #f6aa1c;
+  cursor: pointer;
 }
 
-li:hover span {
+mat-list-item:hover span {
   color: black;
 }
 

@@ -1,3 +1,7 @@
+h1{
+    display: inline-block;
+}
+
 .breathing-room-top {
     padding: 12px 0 0 0;
 }
@@ -15,6 +19,13 @@ hr {
     padding: 0;
 }
 
-.red-color{
-    color:red;
+.red-color {
+    color: red;
 }
+
+.close-button{
+    float: right;
+    top: 5px;
+    right: 5px;
+  }
+  

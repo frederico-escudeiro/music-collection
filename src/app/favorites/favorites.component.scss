@@ -1,19 +1,37 @@
-a:hover {
-    background-color: #f6aa1c;
-    color: white;
-    cursor: pointer;
-}
-
-a:hover i{
-    color:white;
-}
-
-h2 {
-    color: #f6aa1c;
-}
-
-i {
+span {
     color: #f6aa1c;
     font-size: x-large;
 }
 
+h1 {
+    font-size: 36px;
+    margin: 0 0 30px;
+}
+
+
+
+#no-favs h2 {
+    color: #f6aa1c;
+}
+
+#no-favs h2,
+#no-favs p {
+    text-align: center;
+}
+
+mat-divider {
+    margin: 2px 10px 25px;
+}
+
+mat-list {
+    margin: 0 10px 0;
+}
+
+mat-list-item:hover {
+    background-color: #f6aa1c;
+    cursor: pointer;
+}
+
+mat-list-item:hover span {
+    color: black;
+}

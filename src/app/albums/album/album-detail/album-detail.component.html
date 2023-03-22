@@ -1,8 +1,10 @@
-<h3>Details</h3>
-<hr>
-<ul>
-    <li><strong>Album duration</strong><br>{{ album.duration }}</li>
-    <li><strong>Number of songs</strong><br>{{ album.album.songs.length }} songs</li>
-    <li><strong>Description</strong><br>{{ album.album.description }}</li>
-</ul>
-<hr>
+<mat-card>
+    <mat-card-header>Details</mat-card-header>
+    <mat-card-content>
+        <ul>
+            <li><strong>Album duration</strong><br>{{ album.duration }}</li>
+            <li><strong>Number of songs</strong><br>{{ album.album.songs.length }} songs</li>
+            <li><strong>Description</strong><br>{{ album.album.description }}</li>
+        </ul>
+    </mat-card-content>
+</mat-card>

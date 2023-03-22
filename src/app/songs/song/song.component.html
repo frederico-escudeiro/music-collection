@@ -1,21 +1,28 @@
-<h1 class="fs-1 text-center pt-4 pb-0">{{song.song.title}}<br>
-    <span class="material-symbols-rounded" [ngClass]="isFavorite ? 'fill' : ''" (click)="onToggleFavorite()">
+<div fxLayout="column" fxLayoutAlign="space-around center">
+    <h1 fxFlexAlign="center">{{song.song.title}}</h1>
+    <span fxFlexAlign="center" class="material-symbols-rounded" [ngClass]="isFavorite ? 'fill' : ''"
+        (click)="onToggleFavorite()">
         favorite
     </span>
-</h1>
-<p class="fs-5 text-center mt-3">Details</p>
-<hr class="my-1 mx-5">
-<ul class="list-group list-unstyled py-2 my-3 text-left mx-5">
-    <li class="list-group-item fs-4 py-1 d-flex justify-content-between">
-        <div>Length</div>
-        <div>{{song.song.length}}</div>
-    </li>
-    <li class="list-group-item fs-4 py-1 d-flex justify-content-between">
-        <div>Album</div>
-        <div>{{song.albumTitle}}</div>
-    </li>
-    <li class="list-group-item fs-4 py-1 d-flex justify-content-between">
-        <div>Artist</div>
-        <div>{{song.artistName}}</div>
-    </li>
-</ul>
+    <mat-card>
+        <mat-card-header>Details</mat-card-header>
+        <mat-card-content>
+            <mat-list>
+                <mat-list-item>
+                    <strong fxFlex="grow">Length</strong>
+                    <p>{{song.song.length}}</p>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                    <strong fxFlex="grow">Album</strong>
+                    <p>{{song.albumTitle}}</p>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                    <strong fxFlex="grow">Artist</strong>
+                    <p>{{song.artistName}}</p>
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+</div>

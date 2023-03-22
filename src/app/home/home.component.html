@@ -11,9 +11,14 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
         <div fxLayout="column">
-            <h3>Albums</h3>
-            <p *ngFor="let album of artist.albums">{{ album.title }}</p>
-            <button mat-button matTooltip="Add new Album" (click)="openDialog(artist)">
+            <mat-list>
+                <h3>Albums</h3>
+                <mat-list-item *ngFor="let album of artist.albums" (click)="onGoToAlbum(album.title)">
+                    <strong>{{ album.title }}</strong>
+                </mat-list-item>
+            </mat-list>
+            <button fxFlexAlign="start" mat-icon-button matTooltip="Add new Album" matTooltipPosition="right"
+                (click)="openDialog(artist)">
                 <span class="material-symbols-rounded">add_circle</span>
             </button>
         </div>

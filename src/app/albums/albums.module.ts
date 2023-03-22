@@ -11,6 +11,7 @@ import { GlobalConstants } from "src/app/shared/global-constants.enum";
 import { MatListModule } from "@angular/material/list";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { MatDividerModule } from "@angular/material/divider";
+import { MatCardModule } from "@angular/material/card";
 
 @NgModule({
     declarations: [
@@ -44,6 +45,7 @@ import { MatDividerModule } from "@angular/material/divider";
         MatListModule,
         FlexLayoutModule,
         MatDividerModule,
+        MatCardModule
     ],
     providers: [AlbumsGuardService, SongsGuardService],
     exports: [
