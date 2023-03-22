@@ -1,16 +1,17 @@
-<h1 class="fs-1 text-center pt-4 pb-0"> {{ album.album.title }}<br>
-    <span class="material-symbols-rounded" [ngClass]="isFavorite ? 'fill' : ''" (click)="onToggleFavorite()">
-        favorite
-    </span>
-</h1>
-<p class="fs-4 text-center opacity-90 p-0 mt-0 mb-3">{{ album.artistName }}</p>
-<div class="album-content d-flex">
-    <div class="list-group mx-2 flex-grow-1">
-        <a (click)="onLoadSongByTitle(song)" *ngFor="let song of album.album.songs"
-            class="list-group-item list-group-item-action">
-            <h6 class="fs-5 mb-0">{{ song.title }}</h6>
-            <p class="mb-0 opacity-90"> {{ song.length }} </p>
-        </a>
+<div fxLayout="column" fxLayoutAlign="space-around stretch">
+    <h1 fxFlexAlign="center"> {{ album.album.title }}</h1>
+    <p fxFlexAlign="center" id="favorite-symbol" class="material-symbols-rounded" [ngClass]="isFavorite ? 'fill' : ''"
+        (click)="onToggleFavorite()">favorite</p>
+    <h2 fxFlexAlign="center">{{ album.artistName }}</h2>
+    <div fxLayout="row" fxLayout.lt-md="column-reverse">
+        <mat-list fxFlex="70" fxFlex.lt-md>
+            <h3>Songs</h3>
+            <mat-divider></mat-divider>
+            <mat-list-item *ngFor="let song of album.album.songs" (click)="onLoadSongByTitle(song)">
+                <strong>{{ song.title }}</strong><br>{{ song.length }}
+            </mat-list-item>
+        </mat-list>
+        <mat-divider fxHide.lt-sm [vertical]="true"></mat-divider>
+        <app-album-detail class="details-content" fxFlex="25" fxFlex.lt-md [album]="album"></app-album-detail>
     </div>
-    <app-album-detail class="details-content w-25 px-4" [album]="album"></app-album-detail>
 </div>

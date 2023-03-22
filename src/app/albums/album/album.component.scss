@@ -1,20 +1,43 @@
-@media screen and (max-width:700px) {
-  .album-content {
-    flex-wrap: wrap-reverse;
-  }
 
-  .details-content {
-    flex-grow: 1;
-  }
+h1{
+  font-size: 36px;
+  margin: 5px;
 }
+
+#favorite-symbol {
+  font-size: 36px;
+  color: #f6aa1c;
+  cursor: pointer;
+}
+
+h2{
+  font-size: 28px;
+}
+
+
+mat-list{
+  margin: 0 0 0 10px;
+}
+
+mat-list-item, h3{
+  padding: 0 0 0 20px;
+}
+
+mat-list-item:hover {
+  background-color: #f6aa1c;
+  cursor: pointer;
+}
+
+mat-divider{
+  margin: 2px 10px 25px;
+}
+
+app-album-detail{
+  margin: 10px;
+}
+
 
 a:hover {
   background-color: #f6aa1c;
   color: white;
-  cursor: pointer;
-}
-
-span {
-  color: #f6aa1c;
-  cursor: pointer;
 }

@@ -1,9 +1,7 @@
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
-import { Component, ViewChild } from '@angular/core';
-import { MatTooltip } from '@angular/material/tooltip';
+import { Component} from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalConstants } from 'src/app/shared/global-constants.enum';
-import { OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-side-bar',
@@ -12,7 +10,6 @@ import { OnDestroy } from '@angular/core';
 })
 export class SideBarComponent {
   isTooltipEnabled: boolean = false;
-
 
   constructor(private router: Router, private breakpointObserver: BreakpointObserver) {
     this.breakpointObserver.observe([

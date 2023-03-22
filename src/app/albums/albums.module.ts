@@ -8,6 +8,9 @@ import { AlbumsComponent } from "./albums.component";
 import { AlbumsGuardService } from "./albums.guard";
 import { AlbumDetailComponent } from './album/album-detail/album-detail.component';
 import { GlobalConstants } from "src/app/shared/global-constants.enum";
+import { MatListModule } from "@angular/material/list";
+import { FlexLayoutModule } from "@angular/flex-layout";
+import { MatDividerModule } from "@angular/material/divider";
 
 @NgModule({
     declarations: [
@@ -37,7 +40,10 @@ import { GlobalConstants } from "src/app/shared/global-constants.enum";
                 ]
             }
 
-        ])
+        ]),
+        MatListModule,
+        FlexLayoutModule,
+        MatDividerModule,
     ],
     providers: [AlbumsGuardService, SongsGuardService],
     exports: [
