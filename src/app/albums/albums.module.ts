@@ -1,53 +1,30 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from '@angular/core'
 import { RouterModule } from "@angular/router";
-import { SongComponent } from "../songs/song/song.component";
+import { SongComponent } from "./album/song/song.component";
 import { SongsGuardService } from "../songs/songs.guard";
 import { AlbumComponent } from "./album/album.component";
 import { AlbumsComponent } from "./albums.component";
 import { AlbumsGuardService } from "./albums.guard";
 import { AlbumDetailComponent } from './album/album-detail/album-detail.component';
 import { GlobalConstants } from "src/app/shared/global-constants.enum";
-import { MatListModule } from "@angular/material/list";
-import { FlexLayoutModule } from "@angular/flex-layout";
-import { MatDividerModule } from "@angular/material/divider";
-import { MatCardModule } from "@angular/material/card";
+import { SharedModule } from "../shared/shared.module";
+import { AlbumsRoutingModule } from "./album/album-routing.module";
+import { EditSongComponent } from './album/song/edit-song/edit-song.component';
 
 @NgModule({
     declarations: [
         AlbumsComponent,
         AlbumComponent,
         SongComponent,
-        AlbumDetailComponent
+        AlbumDetailComponent,
+        EditSongComponent
     ],
     imports: [
-        CommonModule,
-        RouterModule.forChild([
-            { path: '', component: AlbumsComponent },
-            {
-                path: ':' + GlobalConstants.ALBUM_TITLE_STRING,
-                component: AlbumComponent,
-                canActivate: [AlbumsGuardService],
-                children: [
-
-                    { path: GlobalConstants.FAVORITE_STRING, component: AlbumComponent },
-                ]
-            }, {
-                path: ':' + GlobalConstants.ALBUM_TITLE_STRING + '/:' + GlobalConstants.SONG_TITLE_STRING,
-                component: SongComponent,
-                canActivate: [SongsGuardService],
-                children: [
-                    { path: GlobalConstants.FAVORITE_STRING, component: SongComponent }
-                ]
-            }
-
-        ]),
-        MatListModule,
-        FlexLayoutModule,
-        MatDividerModule,
-        MatCardModule
+        SharedModule,
+        AlbumsRoutingModule
     ],
-    providers: [AlbumsGuardService, SongsGuardService],
+
     exports: [
         AlbumsComponent,
         AlbumComponent,

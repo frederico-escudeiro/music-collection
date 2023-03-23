@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpService } from '../http/http.service';
 import { Router } from '@angular/router';
 import { GlobalConstants } from 'src/app/shared/global-constants.enum';
+import { Album } from '../shared/types.model';
 
 @Component({
   selector: 'app-favorites',
@@ -9,24 +10,33 @@ import { GlobalConstants } from 'src/app/shared/global-constants.enum';
   styleUrls: ['./favorites.component.scss']
 })
 export class FavoritesComponent {
-  favorites: any[];
-  songFavorites:any[];
-  albumFavorites:any[];
+  favoriteSongs: any[];
+  favoriteAlbums: Album[];
 
   constructor(private httpService: HttpService, private router: Router) {
-    this.favorites = this.httpService.getFavoritesData.getValue();
-    this.songFavorites = this.favorites.filter(fav => fav.song !== undefined);
-    this.albumFavorites = this.favorites.filter(fav => fav.song === undefined);
+    this.favoriteSongs = this.httpService.getFavoriteSongs;
+    this.favoriteAlbums = this.httpService.getFavoriteAlbums;
   }
 
   onNavigateToFavorite(item: any) {
-    this.router.navigate([
-      '/'
-      + GlobalConstants.MY_ALBUMS_STRING
-      + '/'
-      + item.album.title
-      + (item.song !== undefined ? '/' + item.song.title : '')
-      + '/'
-      + GlobalConstants.FAVORITE_STRING])
+    if (item.song !== undefined) {
+      this.router.navigate([
+        '/'
+        + GlobalConstants.MY_ALBUMS_STRING
+        + '/'
+        + item.album.title
+        + '/'
+        + item.song.title
+        + '/'
+        + GlobalConstants.FAVORITE_STRING])
+    } else {
+      this.router.navigate([
+        '/'
+        + GlobalConstants.MY_ALBUMS_STRING
+        + '/'
+        + item.title
+        + '/'
+        + GlobalConstants.FAVORITE_STRING])
+    }
   }
 }

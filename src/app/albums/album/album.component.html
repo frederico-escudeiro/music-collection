@@ -1,4 +1,5 @@
-<div fxLayout="column" fxLayoutAlign="space-around stretch">
+<div id="container" fxLayout="column" fxLayoutAlign="space-around stretch">
+    <mat-chip fxHide.lt-md disabled color="primary">ALBUM</mat-chip>
     <h1 fxFlexAlign="center"> {{ album.album.title }}</h1>
     <p fxFlexAlign="center" id="favorite-symbol" class="material-symbols-rounded" [ngClass]="isFavorite ? 'fill' : ''"
         (click)="onToggleFavorite()">favorite</p>

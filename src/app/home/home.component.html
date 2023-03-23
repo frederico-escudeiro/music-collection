@@ -1,27 +1,28 @@
-<h1 class="fs-1 text-center py-4">Home</h1>
-<p class="fs-5 text-center py-4">Welcome to your music collection!</p>
-<hr>
-<h3 class="fs-3 text-center py-4">My Artists</h3>
+<div fxLayout="column" fxLayoutAlign="space-around stretch">
+    <h1 fxFlexAlign="center">Home</h1>
+    <p fxFlexAlign="center">Welcome to your music collection!</p>
+    <hr>
+    <h2 fxFlexAlign="center">My Artists</h2>
 
-<mat-accordion #active>
-    <mat-expansion-panel *ngFor="let artist of artists" hideToggle>
-        <mat-expansion-panel-header>
-            <mat-panel-title class="fs-5">
-                {{ artist.name }}
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div fxLayout="column">
-            <mat-list>
-                <h3>Albums</h3>
-                <mat-list-item *ngFor="let album of artist.albums" (click)="onGoToAlbum(album.title)">
-                    <strong>{{ album.title }}</strong>
-                </mat-list-item>
-            </mat-list>
-            <button fxFlexAlign="start" mat-icon-button matTooltip="Add new Album" matTooltipPosition="right"
-                (click)="openDialog(artist)">
-                <span class="material-symbols-rounded">add_circle</span>
-            </button>
-        </div>
-    </mat-expansion-panel>
-</mat-accordion>
-<!--<app-add-album *ngIf="isAddingAlbum" [artist]="selectedArtist" (closeModal)="onStopAdding()"></app-add-album>-->
+    <mat-accordion #active>
+        <mat-expansion-panel *ngFor="let artist of artists" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{ artist.name }}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div fxLayout="column">
+                <mat-list>
+                    <h3>Albums</h3>
+                    <mat-list-item *ngFor="let album of artist.albums" (click)="onGoToAlbum(album.title)">
+                        <strong>{{ album.title }}</strong>
+                    </mat-list-item>
+                </mat-list>
+                <button fxFlexAlign="start" mat-icon-button matTooltip="Add new Album" matTooltipPosition="right"
+                    (click)="openDialog(artist)">
+                    <span class="material-symbols-rounded">add_circle</span>
+                </button>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

@@ -1,4 +1,5 @@
 <div fxLayout="column" fxLayoutAlign="space-around center">
+    <mat-chip id="top-chip" fxHide.lt-md disabled color="primary">SONG</mat-chip>
     <h1 fxFlexAlign="center">{{song.song.title}}</h1>
     <span fxFlexAlign="center" class="material-symbols-rounded" [ngClass]="isFavorite ? 'fill' : ''"
         (click)="onToggleFavorite()">
@@ -8,6 +9,10 @@
         <mat-card-header>Details</mat-card-header>
         <mat-card-content>
             <mat-list>
+                <mat-list-item fxHide fxShow.lt-md>
+                    <mat-chip id="bot-chip" disabled color="primary">SONG</mat-chip>
+                </mat-list-item>
+                <mat-divider fxHide fxShow.lt-md></mat-divider>
                 <mat-list-item>
                     <strong fxFlex="grow">Length</strong>
                     <p>{{song.song.length}}</p>
@@ -23,6 +28,9 @@
                     <p>{{song.artistName}}</p>
                 </mat-list-item>
             </mat-list>
+
         </mat-card-content>
+        <button id="edit-button" mat-raised-button fxFlexAlign="center" (click)="onEditSong()">Edit</button>
     </mat-card>
+
 </div>

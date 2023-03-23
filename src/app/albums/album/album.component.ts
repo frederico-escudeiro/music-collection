@@ -36,7 +36,7 @@ export class AlbumComponent implements OnInit {
       + this.route.snapshot.paramMap.get(GlobalConstants.ALBUM_TITLE_STRING)
       + (this.isFavorite ? '/' + GlobalConstants.FAVORITE_STRING : '')
     );
-    this.httpService.postAlbumDataWithFavorite(
+    this.httpService.updateAlbumDataWithFavorite(
       this.albumTitle,
       this.album.artistName,
       this.isFavorite

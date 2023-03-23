@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import jsonData from '../../assets/json/artists_albuns.json';
 import { Song, Album, Artist } from 'src/app/shared/types.model';
-import { GlobalConstants } from 'src/app/shared/global-constants.enum';
 import { BehaviorSubject } from 'rxjs';
 
 
@@ -13,10 +12,15 @@ let collectionArray: Artist[] = jsonData;
 })
 export class HttpService {
 
-  private favoritesData = new BehaviorSubject<{ album: Album, song?: Song }[]>([]);
+  private favoriteSongs = new BehaviorSubject<{ album: Album, song?: Song }[]>([]);
+  private favoriteAlbums = new BehaviorSubject<Album[]>([]);
 
-  get getFavoritesData() {
-    return this.favoritesData;
+  get getFavoriteSongs() {
+    return this.favoriteSongs.getValue();
+  }
+
+  get getFavoriteAlbums() {
+    return this.favoriteAlbums.getValue();
   }
 
   getArtistsData() {
@@ -28,47 +32,37 @@ export class HttpService {
       album: Album,
       artistName: string
     }[] = []
-    for (let artist of collectionArray) {
-      for (let album of artist.albums) {
+
+    collectionArray.forEach(artist => {
+      artist.albums.forEach(album => {
         artistAlbums.push({
           artistName: artist.name,
           album: album
         });
-      }
-    }
+      })
+    })
     return artistAlbums;
   }
 
-  getAlbumByTitle(albumTitle: string) {
-    for (let artist of collectionArray) {
-      for (let album of artist.albums) {
-        if (album.title === albumTitle) {
-          return {
-            artistName: artist.name,
-            album: album,
-            duration: this.getAlbumDuration(album.songs)
-          };
+  getAlbumByTitle(albumTitle: string): Album | null {
+    let foundAlbum: Album | undefined;
+    let result: any = null;
+
+    collectionArray.forEach(artist => {
+      foundAlbum = artist.albums.find(album => album.title === albumTitle);
+      if (foundAlbum !== undefined) {
+        result = {
+          artistName: artist.name,
+          album: foundAlbum,
+          duration: this.getAlbumDuration(foundAlbum!.songs)
         }
       }
-    }
-    return null;
-  }
 
-  getAlbumDuration(songs: Song[]) {
-    let totalSeconds = 0;
-    let result = "";
-    for (let song of songs) {
-      let tempTime = song.length.split(":");
-      totalSeconds = totalSeconds + ((+tempTime[0]) * 60 + (+tempTime[1]));
-    }
-    const totalMinutes = Math.floor(totalSeconds / 60);
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
-    const seconds = totalSeconds % 60;
-
-    result = hours + ":" + minutes + ":" + seconds;
+    });
     return result;
   }
+
+
 
   getSongData() {
     var songs: {
@@ -76,63 +70,72 @@ export class HttpService {
       artistName: string,
       albumTitle: string
     }[] = [];
-    for (let artist of collectionArray) {
-      for (let album of artist.albums) {
-        for (let song of album.songs) {
+
+    collectionArray.forEach(artist => {
+      artist.albums.forEach(album => {
+        album.songs.forEach(song => {
           songs.push(
             {
               song: <Song>song,
               artistName: artist.name,
               albumTitle: album.title
             });
-        }
-      }
-    }
+        })
+      })
+    })
     return songs;
   }
 
   getSongByTitle(songTitle: string) {
-    for (let artist of collectionArray) {
-      for (let album of artist.albums) {
-        for (let song of album.songs)
-          if (song.title === songTitle) {
-            return {
-              song: song,
-              artistName: artist.name,
-              albumTitle: album.title
-            };
+    let foundSong: Song | undefined;
+    let result: any = null;
+
+    collectionArray.forEach(artist => {
+      artist.albums.forEach(album => {
+        foundSong = album.songs.find(song => song.title === songTitle);
+        if (foundSong !== undefined) {
+          result = {
+            song: foundSong,
+            artistName: artist.name,
+            albumTitle: album.title
           }
-      }
-    }
-    return null;
+        }
+      })
+    });
+    return result;
   }
   /*
     Gets favorites data from collectionArray.
   */
-  getFavoritesDataFromDB() {
-    for (let artist of collectionArray) {
-      for (let album of artist.albums) {
+  getFavoritesData() {
+    collectionArray.forEach(artist => {
+      artist.albums.forEach(album => {
         if (album.favorite) {
-          this.favoritesData.next(
-            this.favoritesData.getValue().concat({ album: album, song: undefined })
+          this.favoriteAlbums.next(
+            this.favoriteAlbums.getValue().concat(album)
           )
         }
-        for (let song of album.songs) {
+        album.songs.forEach(song => {
           if (song.favorite) {
-            this.favoritesData.next(
-              this.favoritesData.getValue().concat({ album: album, song: song }));
+            this.favoriteSongs.next(
+              this.favoriteSongs.getValue().concat({ album: album, song: song }));
           }
-        }
-      }
+        })
+      })
     }
+    )
   }
 
-  postSongDataWithFavorite(songTitle: string, albumTitle: string, artistName: string, setFavorite: boolean) {
+  updateSongDataWithFavorite(songTitle: string, albumTitle: string, artistName: string, setFavorite: boolean) {
 
     let songToUpdate = collectionArray
       .find(artist => artist.name === artistName)
       ?.albums.find((album: Album) => album.title === albumTitle)
       ?.songs.filter((song: Song) => song.title === songTitle)[0];
+
+    if (songToUpdate === undefined) {
+      return;
+    }
 
     let favoriteSong: Song = {
       title: songToUpdate?.title !== undefined ? songToUpdate.title : '',
@@ -140,25 +143,23 @@ export class HttpService {
       favorite: setFavorite
     }
 
-    for (let artist of collectionArray) {
-      for (let album of artist.albums) {
-        for (let song of album.songs) {
+    collectionArray.forEach(artist => {
+      artist.albums.forEach(album => {
+        album.songs.forEach(song => {
           if (song === songToUpdate) {
             album.songs[album.songs.indexOf(song)] = favoriteSong;
             artist.albums[artist.albums.indexOf(album)] = album;
             collectionArray[collectionArray.indexOf(artist)] = artist;
-            this.favoritesData.next(
-              this.favoritesData.getValue().concat({ album: album, song: song })
+            this.favoriteSongs.next(
+              this.favoriteSongs.getValue().concat({ album: album, song: song })
             );
           }
-        }
-      }
-    }
-
-
+        })
+      })
+    })
   }
 
-  postAlbumDataWithFavorite(albumTitle: string, artistName: string, isFavorite: boolean) {
+  updateAlbumDataWithFavorite(albumTitle: string, artistName: string, isFavorite: boolean) {
     let albumToUpdate = collectionArray
       .find(artist => artist.name === artistName)?.albums
       .filter(album => album.title === albumTitle)[0];
@@ -170,48 +171,66 @@ export class HttpService {
       favorite: isFavorite
     }
 
-    for (let artist of collectionArray) {
-      for (let album of artist.albums) {
+    collectionArray.forEach(artist => {
+      artist.albums.forEach(album => {
         if (album === albumToUpdate) {
           artist.albums[artist.albums.indexOf(album)] = favoriteAlbum;
           collectionArray[collectionArray.indexOf(artist)] = artist;
-          this.favoritesData.next(
-            this.favoritesData.getValue().concat({ album: album, song: undefined })
+          this.favoriteAlbums.next(
+            this.favoriteAlbums.getValue().concat(album)
           );
         }
-      }
-    }
+      })
+    });
   }
 
   postNewAlbumData(newAlbum: Album, selectedArtist: Artist) {
-    for (let artist of collectionArray) {
+
+    collectionArray.forEach(artist => {
       if (selectedArtist === artist) {
         artist.albums.push(newAlbum);
         collectionArray[collectionArray.indexOf(artist)] = artist;
       }
-    }
+    })
   }
 
   existsDuplicateAlbum(albumTitle: string): boolean {
-    for (let artist of collectionArray) {
-      for (let album of artist.albums) {
+    let existsAlbum = false;
+    collectionArray.forEach(artist => {
+      artist.albums.forEach(album => {
         if (album.title === albumTitle) {
-          return true;
+          existsAlbum = true;
         }
-      }
-    }
-    return false;
+      })
+    })
+    return existsAlbum;
   }
 
   filterDuplicateSongsInAlbum(createdAlbum: Album): Album {
-    for (let artist of collectionArray) {
-      for (let album of artist.albums) {
-        for (let song of album.songs) {
+    collectionArray.map(artist => {
+      artist.albums.map(album => {
+        album.songs.map(song => {
           createdAlbum.songs = createdAlbum.songs.filter(s => s.title !== song.title);
-        }
-      }
-    }
+        })
+      })
+    })
     return createdAlbum;
 
+  }
+
+  getAlbumDuration(songs: Song[]) {
+    let totalSeconds = 0;
+    let result = "";
+    songs.forEach(song => {
+      let tempTime = song.length.split(":");
+      totalSeconds = totalSeconds + ((+tempTime[0]) * 60 + (+tempTime[1]));
+    })
+    const totalMinutes = Math.floor(totalSeconds / 60);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    const seconds = totalSeconds % 60;
+
+    result = hours + ":" + minutes + ":" + seconds;
+    return result;
   }
 }

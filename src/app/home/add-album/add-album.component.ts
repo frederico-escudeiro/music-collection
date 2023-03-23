@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AlbumsComponent } from 'src/app/albums/albums.component';
 import { Album, Artist, Song } from 'src/app/shared/types.model';
 import { HomeComponent } from '../home.component';
 
@@ -13,18 +14,13 @@ import { HomeComponent } from '../home.component';
 export class AddAlbumComponent {
 	formGroup: FormGroup;
 
-	constructor(public dialogRef: MatDialogRef<HomeComponent>, @Inject(MAT_DIALOG_DATA) public artist: Artist) {
+	constructor(public dialogRef: MatDialogRef<HomeComponent | AlbumsComponent>, @Inject(MAT_DIALOG_DATA) public data: Artist[]) {
 		this.formGroup = new FormGroup({
+			artist: new FormControl<Artist|null>(null),
 			title: new FormControl(null, Validators.required),
 			description: new FormControl(null, Validators.required),
 			songs: new FormArray([])
 		});
-
-		// this.firstFormGroup = this.fb.group({
-		// 	title: [null, Validators.required],
-		// 	description: [null, Validators.required],
-		// 	songs: this.fb.array<Song>([])
-		// });
 	}
 
 	onAddSongControl() {
@@ -34,12 +30,6 @@ export class AddAlbumComponent {
 		}, Validators.required);
 
 		this.getSongArray.push(songControl);
-
-		// const control = this.fb.group({
-		// 	title: '',
-		// 	length: '',
-		// })
-
 	}
 
 	onRemoveSongControl(index: number) {
@@ -52,7 +42,7 @@ export class AddAlbumComponent {
 				this.formGroup.get('title')?.value,
 				this.formGroup.get('description')?.value,
 				this.getSongArray.value);
-		this.dialogRef.close(album);
+		this.dialogRef.close({artist:this.formGroup.get('artist')?.value, album: album});
 	}
 
 	onNoClick(): void {

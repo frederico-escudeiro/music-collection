@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/http/http.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GlobalConstants } from 'src/app/shared/global-constants.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { EditSongComponent } from './edit-song/edit-song.component';
 
 @Component({
   selector: 'app-song',
@@ -15,7 +17,12 @@ export class SongComponent implements OnInit {
   song: any;
   isFavorite: boolean = false;
 
-  constructor(private route: ActivatedRoute, private httpService: HttpService, private router: Router, private snackBar: MatSnackBar) { }
+  constructor(
+    private route: ActivatedRoute,
+    private httpService: HttpService,
+    private router: Router,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.songTitle = this.route.snapshot.params[GlobalConstants.SONG_TITLE_STRING];
@@ -33,7 +40,7 @@ export class SongComponent implements OnInit {
       + this.route.snapshot.paramMap.get(GlobalConstants.SONG_TITLE_STRING)
       + (this.isFavorite ? '/' + GlobalConstants.FAVORITE_STRING : '')
     );
-    this.httpService.postSongDataWithFavorite(
+    this.httpService.updateSongDataWithFavorite(
       this.songTitle,
       this.song.albumTitle,
       this.song.artistName,
@@ -41,6 +48,7 @@ export class SongComponent implements OnInit {
     )
     this.handleSnackBar();
   }
+
   handleSnackBar() {
     let message = "The song '" + this.songTitle + "' was " + (this.isFavorite ? 'added to' : 'removed from') + " favorites!"
     let snackBarRef = this.snackBar.open(message);
@@ -51,8 +59,19 @@ export class SongComponent implements OnInit {
     )
   }
 
+  onEditSong() {
+    const dialogRef = this.dialog.open(EditSongComponent);
 
+    dialogRef.afterClosed().subscribe(result => {
+      let message = "";
+      let snackBarRef = this.snackBar.open(message);
+      setTimeout(() => {
+        snackBarRef.dismiss()
+      },
+        3000
+      )
+    });
 
-
+  }
 
 }

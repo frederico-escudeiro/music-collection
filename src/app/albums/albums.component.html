@@ -1,9 +1,14 @@
 <div fxLayout="column" fxLayoutAlign="space-around">
     <h1 fxFlexAlign="center">My Albums</h1>
     <mat-list fxFlex="70" fxFlex.lt-md>
-        <h3>Albums</h3>
+        <div fxLayout="row">
+            <h3 fxFlex>Albums</h3>
+            <button noFlex mat-icon-button matTooltip="Add new Album" matTooltipPosition="left"
+                (click)="openDialog()"><span class="material-symbols-rounded">add_circle</span></button>
+        </div>
+
         <mat-divider></mat-divider>
-        <mat-list-item (click)="onLoadAlbumByTitle(artistAlbum.album)" *ngFor="let artistAlbum of artistAlbums">
+        <mat-list-item *ngFor="let artistAlbum of artistAlbums" (click)="onLoadAlbumByTitle(artistAlbum.album)">
             <strong>{{artistAlbum.album.title}}</strong><br> {{artistAlbum.artistName}}
         </mat-list-item>
     </mat-list>
