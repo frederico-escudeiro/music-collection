@@ -1,25 +1,31 @@
 <div fxLayout="column" fxLayoutAlign="space-around center">
     <h1>My Favorites</h1>
-     <div id="no-favs" *ngIf="favorites.length === 0">
+    <div id="no-favs" *ngIf="favorites.length === 0">
         <h2>No favorites yet!</h2>
         <p>Start adding favorites by clicking in 'My Albuns' or 'My Songs' tabs!</p>
     </div>
-    <mat-list *ngIf="favorites.length > 0" fxFlexAlign="stretch">
+    <mat-list *ngIf="albumFavorites.length > 0" fxFlexAlign="stretch">
         <p>My Favorite Albums</p>
         <mat-divider></mat-divider>
-        <mat-list-item (click)="onRemoveFavorite(favorite)" *ngFor="let favorite of favorites">
-            <strong class="type" *ngIf="favorite.type !== songTypeConstant">{{ favorite.albumTitle }}</strong>
+        <mat-list-item (click)="onNavigateToFavorite(favorite)" *ngFor="let favorite of albumFavorites">
+            <strong class="type" *ngIf="favorite.song === undefined">{{ favorite.album.title }}</strong>
             <span class="material-symbols-rounded fill">favorite</span>
         </mat-list-item>
     </mat-list>
-   
-        
-    <mat-list *ngIf="favorites.length > 0" fxFlexAlign="stretch">
+    <div *ngIf="albumFavorites.length === 0 && favorites.length > 0">
+        <h2>No favorite albums yet!</h2>
+        <p>Start adding favorites by clicking in 'My Albums' tab!</p>
+    </div>
+    <mat-list *ngIf="songFavorites.length > 0" fxFlexAlign="stretch">
         <p>My Favorite Songs</p>
         <mat-divider></mat-divider>
-        <mat-list-item (click)="onRemoveFavorite(favorite)" *ngFor="let favorite of favorites">
-            <strong class="type" *ngIf="favorite.type === songTypeConstant">{{ favorite.songTitle }}</strong>
+        <mat-list-item (click)="onNavigateToFavorite(favorite)" *ngFor="let favorite of songFavorites">
+            <strong class="type" *ngIf="favorite.song !== undefined">{{ favorite.song.title }}</strong>
             <span class="material-symbols-rounded fill">favorite</span>
         </mat-list-item>
     </mat-list>
+    <div *ngIf="songFavorites.length === 0 && favorites.length > 0">
+        <h2>No favorite songs yet!</h2>
+        <p>Start adding favorites by clicking in 'My Songs' tab!</p>
+    </div>
 </div>

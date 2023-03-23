@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import jsonData from '../../assets/json/artists_albuns.json';
 import { Song, Album, Artist } from 'src/app/shared/types.model';
 import { GlobalConstants } from 'src/app/shared/global-constants.enum';
+import { BehaviorSubject } from 'rxjs';
 
 
 
@@ -12,6 +13,11 @@ let collectionArray: Artist[] = jsonData;
 })
 export class HttpService {
 
+  private favoritesData = new BehaviorSubject<{ album: Album, song?: Song }[]>([]);
+
+  get getFavoritesData() {
+    return this.favoritesData;
+  }
 
   getArtistsData() {
     return collectionArray;
@@ -100,40 +106,25 @@ export class HttpService {
     }
     return null;
   }
-
-  getFavoritesData() {
-    let favorites: (
-      {
-        type: string,
-        songTitle?: string,
-        albumTitle: string,
-        artistName: string
-      })[] = [];
-
+  /*
+    Gets favorites data from collectionArray.
+  */
+  getFavoritesDataFromDB() {
     for (let artist of collectionArray) {
       for (let album of artist.albums) {
         if (album.favorite) {
-          favorites.push(
-            {
-              type: GlobalConstants.ALBUM_TYPE_STRING,
-              albumTitle: album.title,
-              artistName: artist.name
-            });
+          this.favoritesData.next(
+            this.favoritesData.getValue().concat({ album: album, song: undefined })
+          )
         }
         for (let song of album.songs) {
           if (song.favorite) {
-            favorites.push(
-              {
-                type: GlobalConstants.SONG_TYPE_STRING,
-                songTitle: song.title,
-                albumTitle: album.title,
-                artistName: artist.name
-              });
+            this.favoritesData.next(
+              this.favoritesData.getValue().concat({ album: album, song: song }));
           }
         }
       }
     }
-    return favorites;
   }
 
   postSongDataWithFavorite(songTitle: string, albumTitle: string, artistName: string, setFavorite: boolean) {
@@ -156,10 +147,15 @@ export class HttpService {
             album.songs[album.songs.indexOf(song)] = favoriteSong;
             artist.albums[artist.albums.indexOf(album)] = album;
             collectionArray[collectionArray.indexOf(artist)] = artist;
+            this.favoritesData.next(
+              this.favoritesData.getValue().concat({ album: album, song: song })
+            );
           }
         }
       }
     }
+
+
   }
 
   postAlbumDataWithFavorite(albumTitle: string, artistName: string, isFavorite: boolean) {
@@ -179,6 +175,9 @@ export class HttpService {
         if (album === albumToUpdate) {
           artist.albums[artist.albums.indexOf(album)] = favoriteAlbum;
           collectionArray[collectionArray.indexOf(artist)] = artist;
+          this.favoritesData.next(
+            this.favoritesData.getValue().concat({ album: album, song: undefined })
+          );
         }
       }
     }
