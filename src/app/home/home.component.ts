@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Album, Artist } from 'src/app/shared/types.model';
 import { HttpService } from '../http/http.service';
 import { GlobalConstants } from '../shared/global-constants.enum';
-import { AddAlbumComponent } from './add-album/add-album.component';
+import { AddAlbumComponent } from '../shared/add-album/add-album.component';
 
 @Component({
   selector: 'app-home',

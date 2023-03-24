@@ -3,7 +3,7 @@ import { FormArray, FormControl, FormGroup, Validators, FormBuilder } from '@ang
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlbumsComponent } from 'src/app/albums/albums.component';
 import { Album, Artist, Song } from 'src/app/shared/types.model';
-import { HomeComponent } from '../home.component';
+import { HomeComponent } from '../../home/home.component';
 
 
 @Component({
@@ -42,7 +42,8 @@ export class AddAlbumComponent {
 				this.formGroup.get('title')?.value,
 				this.formGroup.get('description')?.value,
 				this.getSongArray.value);
-		this.dialogRef.close({artist:this.formGroup.get('artist')?.value, album: album});
+		const artist:Artist = this.formGroup.get('artist')?.value;
+		this.dialogRef.close({artist:artist, album: album});
 	}
 
 	onNoClick(): void {

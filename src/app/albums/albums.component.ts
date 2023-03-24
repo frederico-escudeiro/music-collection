@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ComponentFactoryResolver } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { GlobalConstants } from 'src/app/shared/global-constants.enum';
 import { Album, Artist } from 'src/app/shared/types.model';
 import { HttpService } from '../http/http.service';
-import { AddAlbumComponent } from '../home/add-album/add-album.component';
+import { AddAlbumComponent } from '../shared/add-album/add-album.component';
 
 @Component({
   selector: 'app-albums',
@@ -25,31 +25,28 @@ export class AlbumsComponent {
   openDialog(): void {
     const dialogRef = this.dialog.open(AddAlbumComponent, { data: this.artists });
 
-    dialogRef.afterClosed().subscribe(({ artist, album }) => {
+    dialogRef.afterClosed().subscribe((result) => {
       let message = "";
-      if (artist !== undefined) {
-        if (album === undefined) {
-          message = "No Album was created! :(";
+      if (result === undefined || result.album === undefined || result.artist === undefined) {
+        message = "No Album was created! :(";
+      } else {
+        let createdAlbum: Album = result.album;
+
+        if (!this.httpService.existsDuplicateAlbum(createdAlbum.title)) {
+          createdAlbum = this.httpService.filterDuplicateSongsInAlbum(createdAlbum);
+          this.httpService.postNewAlbumData(createdAlbum, result.artist);
+          message = "The Album '" + createdAlbum.title + "' was successfully created!";
         } else {
-          let createdAlbum: Album = album;
-
-          if (!this.httpService.existsDuplicateAlbum(createdAlbum.title)) {
-            createdAlbum = this.httpService.filterDuplicateSongsInAlbum(createdAlbum);
-            this.httpService.postNewAlbumData(createdAlbum, artist);
-            message = "The Album '" + createdAlbum.title + "' was successfully created!";
-          } else {
-            message = "The Album '" + createdAlbum.title + "' was not created, as it already exists in this Artist.";
-          }
+          message = "The Album '" + createdAlbum.title + "' was not created";
         }
-
-        let snackBarRef = this.snackBar.open(message);
-        setTimeout(() => {
-          snackBarRef.dismiss()
-        },
-          3000
-        )
       }
-    });
 
+      let snackBarRef = this.snackBar.open(message);
+      setTimeout(() => {
+        snackBarRef.dismiss()
+      },
+        3000
+      )
+    });
   }
 }

@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { GlobalConstants } from 'src/app/shared/global-constants.enum';
-import { AddAlbumComponent } from './home/add-album/add-album.component';
-import { FavoritesComponent } from './favorites/favorites.component';
-import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const appRoutes: Routes = [

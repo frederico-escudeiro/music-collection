@@ -2,12 +2,9 @@
 <button class="close-button" color="warn" mat-icon-button (click)="onNoClick()">
 	<span class="material-symbols-rounded">close</span>
 </button>
-
 <form [formGroup]="formGroup" (ngSubmit)="onCreateAlbum()" matDialogContent>
-
 	<mat-stepper linear #stepper>
 		<mat-step [stepControl]="formGroup">
-
 			<ng-template matStepLabel>Album basic information</ng-template>
 			<div fxLayout="column" fxLayoutAlign="space-around stretch" class="breathing-room-top">
 				<mat-form-field *ngIf="data !== null" appearance="fill">
@@ -36,7 +33,6 @@
 
 				<button type="button" mat-button matStepperNext fxFlexAlign="end">Next</button>
 			</div>
-
 		</mat-step>
 		<mat-step [stepControl]="formGroup" label="Fill out the Album's songs">
 			<div fxLayout="column" fxLayoutAlign="space-between stretch">
@@ -58,11 +54,9 @@
 								<mat-label for="songTitle">Song Title</mat-label>
 								<input type="text" matInput id="songTitle" formControlName="title">
 							</mat-form-field>
-							<mat-error
-								*ngIf="!getSongArray.get(''+index)?.get('title')?.valid && getSongArray.get(''+index)?.get('title')?.touched"
+							<mat-error *ngIf="!getSongArray.get(''+index)?.get('title')?.valid && getSongArray.get(''+index)?.get('title')?.touched"
 								class="red-color" noFlex>Please introduce a Song title</mat-error>
 						</div>
-
 						<div fxLayout="column" fxFlex="30">
 							<mat-form-field>
 								<mat-label for="songLength">Song Length</mat-label>
@@ -70,8 +64,7 @@
 							</mat-form-field>
 							<mat-error
 								*ngIf="!getSongArray.get(''+index)?.get('length')?.valid && getSongArray.get(''+index)?.get('length')?.touched"
-								class="red-color" noFlex>Please introduce a Song length with the format
-								59:59</mat-error>
+								class="red-color" noFlex>Please introduce a Song length with the format 59:59</mat-error>
 						</div>
 						<button type="button" mat-icon-button color="warn" (click)="onRemoveSongControl(index)">
 							<span class="material-symbols-rounded">

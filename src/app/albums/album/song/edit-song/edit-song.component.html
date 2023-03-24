@@ -4,13 +4,13 @@
 </button>
 <form [formGroup]="formGroup" (ngSubmit)="onEditSong()" matDialogContent>
     <div fxLayout="column" fxLayoutAlign="space-around stretch" class="breathing-room-top">
-        <h3></h3>
         <mat-form-field appearance="fill">
             <mat-label>Title</mat-label>
             <input matInput placeholder="Title" formControlName="title" required>
+            <mat-error *ngIf="!formGroup.get('title')?.valid && formGroup.get('title')?.touched" noFlex>
+                Please introduce an Album title</mat-error>
         </mat-form-field>
-        <mat-error *ngIf="!formGroup.get('title')?.valid && formGroup.get('title')?.touched" noFlex>
-            Please introduce an Album title</mat-error>
+
         <button type="button" mat-button fxFlexAlign="end">Next</button>
     </div>
 </form>
