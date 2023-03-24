@@ -27,6 +27,16 @@ export class HttpService {
     return collectionArray;
   }
 
+  getArtistByName(artistName: string): Artist | null {
+    let foundArtist: Artist | undefined;
+    let result: any = null;
+    foundArtist = collectionArray.find(artist => artist.name === artistName);
+    if (foundArtist !== undefined) {
+      result = foundArtist;
+    }
+    return result;
+  }
+
   getAlbumsData() {
     var artistAlbums: {
       album: Album,
@@ -150,16 +160,75 @@ export class HttpService {
             album.songs[album.songs.indexOf(song)] = favoriteSong;
             artist.albums[artist.albums.indexOf(album)] = album;
             collectionArray[collectionArray.indexOf(artist)] = artist;
-            this.favoriteSongs.next(
-              this.favoriteSongs.getValue().concat({ album: album, song: song })
-            );
+            if (setFavorite) {
+              this.favoriteSongs.next(
+                this.favoriteSongs.getValue().concat({ album: album, song: song })
+              );
+            } else {
+              this.favoriteSongs.next(
+                this.favoriteSongs.getValue().filter(songToUnfavorite => songToUnfavorite.song?.title !== songTitle)
+              );
+            }
           }
         })
       })
     })
   }
 
-  updateAlbumDataWithFavorite(albumTitle: string, artistName: string, isFavorite: boolean) {
+  updateWithEditedSong(input: any, editedSong: Song, editedAlbum: Album, editedArtist: Artist) {
+
+    if (editedAlbum.title === input.albumTitle && editedArtist.name === input.artistName) {
+      //Só os parâmetros dentro da song são editados:
+      collectionArray.forEach(artist => {
+        artist.albums.forEach(album => {
+          album.songs.forEach(song => {
+            if (song.title === input.song.title) {
+              album.songs[editedAlbum.songs.indexOf(song)] = editedSong;
+              artist.albums[editedArtist.albums.indexOf(album)] = album;
+              collectionArray[collectionArray.indexOf(artist)] = artist;
+              console.log(collectionArray);
+            }
+          })
+        })
+      })
+    } else {
+      //Se o album e o artista forem alterados (ou seja se a song mover-se para outro album e outro artista):
+
+      this.deleteSong(input.song.title);
+      collectionArray.forEach(artist => {
+        if (artist.name === editedArtist.name) {
+          artist.albums.forEach(album => {
+            if (album.title === editedAlbum.title) {
+              album.songs.push(editedSong);
+              artist.albums[artist.albums.indexOf(album)] = album;
+            }
+          })
+          collectionArray[collectionArray.indexOf(artist)] = artist;
+        }
+      })
+      console.log(collectionArray);
+    }
+
+
+  }
+
+  deleteSong(songTitle: string) {
+    collectionArray.forEach(artist => {
+      artist.albums.forEach(album => {
+        album.songs.forEach(song => {
+          if (song.title === songTitle) {
+            album.songs = album.songs.filter(song => songTitle !== song.title);
+            artist.albums[artist.albums.indexOf(album)] = album;
+            collectionArray[collectionArray.indexOf(artist)] = artist
+          }
+        })
+      })
+    })
+
+
+  }
+
+  updateAlbumDataWithFavorite(albumTitle: string, artistName: string, setFavorite: boolean) {
     let albumToUpdate = collectionArray
       .find(artist => artist.name === artistName)?.albums
       .filter(album => album.title === albumTitle)[0];
@@ -168,7 +237,7 @@ export class HttpService {
       title: albumToUpdate?.title ? albumToUpdate.title : '',
       description: albumToUpdate?.description ? albumToUpdate.description : '',
       songs: albumToUpdate?.songs ? albumToUpdate.songs : [],
-      favorite: isFavorite
+      favorite: setFavorite
     }
 
     collectionArray.forEach(artist => {
@@ -176,9 +245,15 @@ export class HttpService {
         if (album === albumToUpdate) {
           artist.albums[artist.albums.indexOf(album)] = favoriteAlbum;
           collectionArray[collectionArray.indexOf(artist)] = artist;
-          this.favoriteAlbums.next(
-            this.favoriteAlbums.getValue().concat(album)
-          );
+          if (setFavorite) {
+            this.favoriteAlbums.next(
+              this.favoriteAlbums.getValue().concat(album)
+            );
+          } else {
+            this.favoriteAlbums.next(
+              this.favoriteAlbums.getValue().filter(albumToUnfavorite => albumToUnfavorite.title !== albumTitle)
+            );
+          }
         }
       })
     });

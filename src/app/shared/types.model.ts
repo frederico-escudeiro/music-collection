@@ -23,5 +23,11 @@ export class Album implements Album {
         this.description = description;
     }
 }
+export class Song implements Song {
+    constructor(title: string, length: string) {
+        this.title = title;
+        this.length = length;
+    }
+}
 
 

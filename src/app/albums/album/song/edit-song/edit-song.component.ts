@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { HomeComponent } from 'src/app/home/home.component';
-import { Album, Artist } from 'src/app/shared/types.model';
+import { HttpService } from 'src/app/http/http.service';
+import { Album, Artist, Song } from 'src/app/shared/types.model';
 import { SongComponent } from '../song.component';
 
 @Component({
@@ -12,18 +12,43 @@ import { SongComponent } from '../song.component';
 })
 export class EditSongComponent {
   formGroup: FormGroup;
+  allArtists: Artist[];
+  selectedArtist: Artist | null;
+  selectedAlbum?: Album;
+  songToEdit: Song;
 
-  constructor(public dialogRef: MatDialogRef<SongComponent>, @Inject(MAT_DIALOG_DATA) public data: Artist[]) {
+  constructor(public dialogRef: MatDialogRef<SongComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private httpService: HttpService) {
+    this.allArtists = this.httpService.getArtistsData();
+    this.selectedArtist = this.httpService.getArtistByName(data.artistName);
+    this.selectedAlbum = this.selectedArtist?.albums?.find(album => album.title === data.albumTitle);
+    this.songToEdit = data.song
     this.formGroup = new FormGroup({
-      artist: new FormControl<Artist | null>(null),
-      album: new FormControl<Album | null >(null),
-      title: new FormControl(null, Validators.required),
-      length: new FormControl(null, [Validators.pattern("^[0-5]?[0-9]:[0-5][0-9]$"), Validators.required])
+      artist: new FormControl<Artist | null>(this.selectedArtist, Validators.required),
+      album: new FormControl<Album | null>(this.selectedAlbum!, Validators.required),
+      title: new FormControl(this.songToEdit.title, Validators.required),
+      length: new FormControl(this.songToEdit.length, [Validators.pattern("^[0-5]?[0-9]:[0-5][0-9]$"), Validators.required])
     }, Validators.required);
   }
 
+  ngOnInit() {
+    this.formGroup.get('artist')?.valueChanges.subscribe((selectedValue: Artist) => {
+      this.selectedArtist = selectedValue;
+    })
+  }
+
   onEditSong() {
-    this.dialogRef.close({ artist: this.formGroup.get('artist')?.value, album: this.formGroup.get('album') });
+    let artist = this.formGroup.get('artist')?.value;
+    let album = this.formGroup.get('album')?.value;
+    let songTitle = this.formGroup.get('title')?.value;
+    let songLength = this.formGroup.get('length')?.value;
+    let song = new Song( songTitle , songLength );
+    this.dialogRef.close(
+      {
+        artist: artist,
+        album: album,
+        song: song
+      }
+    );
   }
 
   onNoClick(): void {

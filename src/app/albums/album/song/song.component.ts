@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, resolveForwardRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/http/http.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -22,13 +22,16 @@ export class SongComponent implements OnInit {
     private httpService: HttpService,
     private router: Router,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar) {
 
-  ngOnInit() {
     this.songTitle = this.route.snapshot.params[GlobalConstants.SONG_TITLE_STRING];
     this.albumTitle = this.route.snapshot.params[GlobalConstants.ALBUM_TITLE_STRING];
     this.song = this.httpService.getSongByTitle(this.songTitle);
     this.isFavorite = this.router.url.includes("/" + GlobalConstants.FAVORITE_STRING, 0);
+  }
+
+  ngOnInit() {
+
   }
 
   onToggleFavorite() {
@@ -60,10 +63,24 @@ export class SongComponent implements OnInit {
   }
 
   onEditSong() {
-    const dialogRef = this.dialog.open(EditSongComponent);
+    const dialogRef = this.dialog.open(EditSongComponent, { data: this.song });
 
     dialogRef.afterClosed().subscribe(result => {
       let message = "";
+
+      if (result.song !== undefined) {
+        this.httpService.updateWithEditedSong(this.song, result.song, result.album, result.artist);
+
+        message = "Song '" + result.song.title + "'  was successfully edited! :)"
+        this.router.navigate(
+          ['/' + GlobalConstants.MY_SONGS_STRING ] //can't navigate to same component with different route
+        );
+
+      } else {
+        message = "Song '" + this.song.title + "' was not edited. :("
+      }
+
+
       let snackBarRef = this.snackBar.open(message);
       setTimeout(() => {
         snackBarRef.dismiss()

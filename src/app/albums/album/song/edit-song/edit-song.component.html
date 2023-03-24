@@ -5,12 +5,37 @@
 <form [formGroup]="formGroup" (ngSubmit)="onEditSong()" matDialogContent>
     <div fxLayout="column" fxLayoutAlign="space-around stretch" class="breathing-room-top">
         <mat-form-field appearance="fill">
-            <mat-label>Title</mat-label>
-            <input matInput placeholder="Title" formControlName="title" required>
-            <mat-error *ngIf="!formGroup.get('title')?.valid && formGroup.get('title')?.touched" noFlex>
-                Please introduce an Album title</mat-error>
+            <mat-label for="artist">Artist</mat-label>
+            <mat-select id="artist" formControlName="artist" [required]="allArtists !== null">
+                <mat-option *ngFor="let artist of allArtists" [value]="artist">
+                    {{artist.name}}
+                </mat-option>
+            </mat-select>
         </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label for="album">Album</mat-label>
+            <mat-select id="album" formControlName="album" [required]="allArtists !== null">
+                <mat-option *ngFor="let album of selectedArtist!.albums" [value]="album">
+                    {{album.title}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
 
-        <button type="button" mat-button fxFlexAlign="end">Next</button>
+            <mat-label for="songTitle">Song Title</mat-label>
+            <input matInput id="songTitle" placeholder="Song Title" formControlName="title" required>
+            <mat-error *ngIf="!formGroup.get('title')?.valid && formGroup.get('title')?.touched" noFlex>
+                Please enter a Song title
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label for="songLength">Song Title</mat-label>
+            <input matInput id="songLength" placeholder="Song Length" formControlName="length" required>
+            <mat-error *ngIf="!formGroup.get('length')?.valid && formGroup.get('length')?.touched" noFlex>
+                Please enter a Song length
+            </mat-error>
+        </mat-form-field>
+        <button type="submit" mat-button color="primary" fxFlexAlign="end"
+        [disabled]="!formGroup.valid">Edit Song</button>
     </div>
 </form>
