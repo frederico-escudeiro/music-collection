@@ -11,6 +11,7 @@ import { GlobalConstants } from "src/app/shared/global-constants.enum";
 import { SharedModule } from "../shared/shared.module";
 import { AlbumsRoutingModule } from "./album/album-routing.module";
 import { EditSongComponent } from './album/song/edit-song/edit-song.component';
+import { EditAlbumComponent } from './album/edit-album/edit-album.component';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,8 @@ import { EditSongComponent } from './album/song/edit-song/edit-song.component';
         AlbumComponent,
         SongComponent,
         AlbumDetailComponent,
-        EditSongComponent
+        EditSongComponent,
+        EditAlbumComponent
     ],
     imports: [
         SharedModule,

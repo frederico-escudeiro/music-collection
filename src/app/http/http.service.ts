@@ -177,7 +177,7 @@ export class HttpService {
 
   updateWithEditedSong(input: any, editedSong: Song, editedAlbum: Album, editedArtist: Artist) {
 
-    if (editedAlbum.title === input.albumTitle && editedArtist.name === input.artistName) {
+    if ((editedAlbum.title === input.albumTitle && editedArtist.name === input.artistName) || editedAlbum === null || editedArtist === null) {
       //Só os parâmetros dentro da song são editados:
       collectionArray.forEach(artist => {
         artist.albums.forEach(album => {
@@ -208,9 +208,45 @@ export class HttpService {
       })
       console.log(collectionArray);
     }
+  }
+
+  updateWithEditedAlbum(input: any, editedAlbum: Album, editedArtist: Artist) {
+    if (editedArtist.name === input.artistName || editedArtist === null) {
+      //Só os parâmetros dentro da song são editados:
+      collectionArray.forEach(artist => {
+        artist.albums.forEach(album => {
+          if (album.title === input.album.title) {
+            artist.albums[artist.albums.indexOf(album)] = editedAlbum;
+            collectionArray[collectionArray.indexOf(artist)] = artist;
+            console.log(collectionArray);
+          }
+        })
+      })
+    } else {
+      this.deleteAlbum(input.album.title);
+      collectionArray.forEach(artist => {
+        if (artist.name === editedArtist.name) {
+          artist.albums.push(editedAlbum);
+        }
+        collectionArray[collectionArray.indexOf(artist)] = artist;
+      })
+      console.log(collectionArray);
+    }
+  }
+
+  deleteAlbum(albumTitle: string) {
+    collectionArray.forEach(artist => {
+      artist.albums.forEach(album => {
+        if (album.title === albumTitle) {
+          artist.albums = artist.albums.filter(album => albumTitle !== album.title);
+          collectionArray[collectionArray.indexOf(artist)] = artist;
+        }
+      })
+    })
 
 
   }
+
 
   deleteSong(songTitle: string) {
     collectionArray.forEach(artist => {

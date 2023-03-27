@@ -29,7 +29,7 @@
             </mat-error>
         </mat-form-field>
         <mat-form-field appearance="fill">
-            <mat-label for="songLength">Song Title</mat-label>
+            <mat-label for="songLength">Song Length</mat-label>
             <input matInput id="songLength" placeholder="Song Length" formControlName="length" required>
             <mat-error *ngIf="!formGroup.get('length')?.valid && formGroup.get('length')?.touched" noFlex>
                 Please enter a Song length

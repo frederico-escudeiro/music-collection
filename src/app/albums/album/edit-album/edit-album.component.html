@@ -1,0 +1,33 @@
+<h1 matDialogTitle>Edit Album</h1>
+<button class="close-button" color="warn" mat-icon-button (click)="onNoClick()">
+    <span class="material-symbols-rounded">close</span>
+</button>
+<form [formGroup]="formGroup" (ngSubmit)="onEditAlbum()" matDialogContent>
+    <div fxLayout="column" fxLayoutAlign="space-around stretch" class="breathing-room-top">
+        <mat-form-field appearance="fill">
+            <mat-label for="artist">Artist</mat-label>
+            <mat-select id="artist" formControlName="artist" [required]="allArtists !== null">
+                <mat-option *ngFor="let artist of allArtists" [value]="artist">
+                    {{artist.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label for="albumTitle">Album Title</mat-label>
+            <input matInput id="albumTitle" placeholder="Album Title" formControlName="title" required>
+            <mat-error *ngIf="!formGroup.get('title')?.valid && formGroup.get('title')?.touched" noFlex>
+                Please enter an Album title
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label for="albumDescription">Album Description</mat-label>
+            <textarea matInput id="albumDescription" placeholder="Album Description" formControlName="description"
+                required></textarea>
+            <mat-error *ngIf="!formGroup.get('description')?.valid && formGroup.get('description')?.touched" noFlex>
+                Please enter an Album description
+            </mat-error>
+        </mat-form-field>
+        <button type="submit" mat-button color="primary" fxFlexAlign="end"
+        [disabled]="!formGroup.valid">Edit Album</button>
+    </div>
+</form>
