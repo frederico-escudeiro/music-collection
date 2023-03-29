@@ -15,6 +15,7 @@ export class AddAlbumComponent {
 	formGroup: FormGroup;
 
 	constructor(public dialogRef: MatDialogRef<HomeComponent | AlbumsComponent>, @Inject(MAT_DIALOG_DATA) public data: Artist[]) {
+		
 		this.formGroup = new FormGroup({
 			artist: new FormControl<Artist|null>(null),
 			title: new FormControl(null, Validators.required),

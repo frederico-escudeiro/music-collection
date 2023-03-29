@@ -24,7 +24,6 @@ export class EditAlbumComponent {
     this.albumToEdit = data.album;
     this.allArtists = this.httpService.getArtistsData();
     let initArtistValue = this.httpService.getArtistByName(data.artistName);
-    //this.selectedArtist = this.httpService.getArtistByName(data.artistName);
     this.formGroup = new FormGroup({
       title: new FormControl(this.albumToEdit.title, Validators.required),
       description: new FormControl(this.albumToEdit.description, Validators.required),
@@ -36,7 +35,7 @@ export class EditAlbumComponent {
     let artistEdited:Artist | null = this.formGroup.get('artist')?.value;
     let albumTitleEdited = this.formGroup.get('title')?.value;
     let albumDescriptionEdited = this.formGroup.get('description')?.value;
-    let albumEdited: Album | null = new Album( albumTitleEdited, albumDescriptionEdited, this.albumToEdit.songs ); //Cria album sem pensar nas songs.
+    let albumEdited: Album | null = new Album( albumTitleEdited, albumDescriptionEdited, this.albumToEdit.songs, this.albumToEdit.favorite ); //Cria album sem pensar nas songs.
     this.dialogRef.close(
       {
         artist: artistEdited,

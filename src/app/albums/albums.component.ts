@@ -23,7 +23,7 @@ export class AlbumsComponent {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(AddAlbumComponent, { data: this.artists });
+    const dialogRef = this.dialog.open(AddAlbumComponent, { data: this.artists, disableClose: true });
 
     dialogRef.afterClosed().subscribe((result) => {
       let message = "";

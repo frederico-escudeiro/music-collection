@@ -22,7 +22,7 @@ export class HomeComponent {
   }
 
   openDialog(artist: Artist): void {
-    const dialogRef = this.dialog.open(AddAlbumComponent);
+    const dialogRef = this.dialog.open(AddAlbumComponent, { disableClose: true });
 
     dialogRef.afterClosed().subscribe(result => {
       let message = "";

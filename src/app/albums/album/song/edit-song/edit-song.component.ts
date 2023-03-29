@@ -41,7 +41,7 @@ export class EditSongComponent {
     let album = this.formGroup.get('album')?.value;
     let songTitle = this.formGroup.get('title')?.value;
     let songLength = this.formGroup.get('length')?.value;
-    let song = new Song( songTitle , songLength );
+    let song = new Song( songTitle , songLength , this.songToEdit.favorite);
     this.dialogRef.close(
       {
         artist: artist,
