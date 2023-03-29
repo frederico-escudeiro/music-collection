@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, ComponentFactoryResolver, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpService } from 'src/app/http/http.service';
@@ -14,7 +14,7 @@ export class EditSongComponent {
   formGroup: FormGroup;
   allArtists: Artist[];
   selectedArtist: Artist | null;
-  selectedAlbum?: Album;
+  selectedAlbum?: Album | null;
   songToEdit: Song;
 
   constructor(public dialogRef: MatDialogRef<SongComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private httpService: HttpService) {
@@ -23,8 +23,8 @@ export class EditSongComponent {
     this.selectedAlbum = this.selectedArtist?.albums?.find(album => album.title === data.albumTitle);
     this.songToEdit = data.song
     this.formGroup = new FormGroup({
-      artist: new FormControl<Artist | null>(this.selectedArtist, Validators.required),
-      album: new FormControl<Album | null>(this.selectedAlbum!, Validators.required),
+      artist: new FormControl<Artist>(this.selectedArtist!, Validators.required),
+      album: new FormControl<Album |null>(this.selectedAlbum!, Validators.required),
       title: new FormControl(this.songToEdit.title, Validators.required),
       length: new FormControl(this.songToEdit.length, [Validators.pattern("^[0-5]?[0-9]:[0-5][0-9]$"), Validators.required])
     }, Validators.required);
@@ -33,7 +33,10 @@ export class EditSongComponent {
   ngOnInit() {
     this.formGroup.get('artist')?.valueChanges.subscribe((selectedValue: Artist) => {
       this.selectedArtist = selectedValue;
+      this.selectedAlbum = null;
+      this.formGroup.get('album')?.setValue("--");
     })
+  
   }
 
   onEditSong() {

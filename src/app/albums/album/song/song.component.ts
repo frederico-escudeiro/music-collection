@@ -39,7 +39,7 @@ export class SongComponent implements OnInit {
         this.song = songValid;
         this.isFavorite = !!this.song.song.favorite;
       } else {
-        console.log("navigate to not-found");
+        ("navigate to not-found");
         this.router.navigate(["/" + GlobalConstants.NOT_FOUND_STRING]);
       }
     })
@@ -78,14 +78,14 @@ export class SongComponent implements OnInit {
   }
 
   onEditSong() {
-    console.log(this.song.song.favorite);
+    (this.song.song.favorite);
     const dialogRef = this.dialog.open(EditSongComponent, { data: this.song, disableClose: true });
 
     dialogRef.afterClosed().subscribe((result: { song: Song, album: Album, artist: Artist }) => {
       let message = "";
 
       if (result !== undefined) {
-        console.log(result.song);
+        (result.song);
         this.httpService.updateWithEditedSong(this.song, result.song, result.album, result.artist);
 
         message = "Song '" + result.song.title + "'  was successfully edited! :)";

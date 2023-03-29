@@ -1,17 +1,16 @@
-<h1 matDialogTitle>Create Album</h1>
-<button class="close-button" color="warn" mat-icon-button (click)="onNoClick()">
+<h1 matDialogTitle>{{isEditing? 'Edit Album' : 'Create Album'}}</h1>
+<button class="close-button" color="warn" mat-icon-button (click)="onNoClick()" (keydown.enter)="$event.preventDefault()">
 	<span class="material-symbols-rounded">close</span>
 </button>
-<form [formGroup]="formGroup" (ngSubmit)="onCreateAlbum()" matDialogContent>
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()" matDialogContent>
 	<mat-stepper linear #stepper>
-		<mat-step [stepControl]="formGroup">
+		<mat-step [stepControl]="formGroup"> 
 			<ng-template matStepLabel>Album basic information</ng-template>
 			<div fxLayout="column" fxLayoutAlign="space-around stretch" class="breathing-room-top">
-				<mat-form-field *ngIf="data !== null" appearance="fill">
+				<mat-form-field appearance="fill">
 					<mat-label>Artist</mat-label>
-					<mat-select formControlName="artist" [required]="data !== null">
-						<mat-option>--</mat-option>
-						<mat-option *ngFor="let artist of data" [value]="artist">
+					<mat-select formControlName="artist" required>
+						<mat-option *ngFor="let artist of allArtists" [value]="artist">
 							{{artist.name}}
 						</mat-option>
 					</mat-select>
@@ -74,9 +73,10 @@
 					</div>
 				</div>
 				<div fxLayout="row" fxLayoutAlign="space-between stretch">
-					<button type="button" mat-button matStepperPrevious>Back</button>
+					<button type="button" mat-button matStepperPrevious [disabled]="disablePreviousStep()">Back</button>
 					<button type="submit" mat-button color="primary" matStepperNext fxFlexAlign="end"
-						[disabled]="!formGroup.valid">Add Album</button>
+					(keydown.enter)="$event.preventDefault()"
+						[disabled]="!formGroup.valid">{{isEditing? 'Edit Album' : 'Create Album'}}</button>
 				</div>
 			</div>
 		</mat-step>

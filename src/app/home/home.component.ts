@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Album, Artist } from 'src/app/shared/types.model';
 import { HttpService } from '../http/http.service';
 import { GlobalConstants } from '../shared/global-constants.enum';
-import { AddAlbumComponent } from '../shared/add-album/add-album.component';
+import { ModifyAlbumComponent } from '../shared/modify-album/modify-album.component';
 
 @Component({
   selector: 'app-home',
@@ -22,14 +22,14 @@ export class HomeComponent {
   }
 
   openDialog(artist: Artist): void {
-    const dialogRef = this.dialog.open(AddAlbumComponent, { disableClose: true });
+    const dialogRef = this.dialog.open(ModifyAlbumComponent, { disableClose: true });
 
     dialogRef.afterClosed().subscribe(result => {
       let message = "";
       if (result === undefined) {
         message = "No Album was created! :(";
       } else {
-        let createdAlbum: Album = result;
+        let createdAlbum: Album = result.album;
 
         if (!this.httpService.existsDuplicateAlbum(createdAlbum.title)) {
           createdAlbum = this.httpService.filterDuplicateSongsInAlbum(createdAlbum);

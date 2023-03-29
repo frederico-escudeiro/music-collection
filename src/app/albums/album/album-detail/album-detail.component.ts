@@ -3,8 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { HttpService } from 'src/app/http/http.service';
+import { ModifyAlbumComponent } from 'src/app/shared/modify-album/modify-album.component';
 import { GlobalConstants } from 'src/app/shared/global-constants.enum';
-import { EditAlbumComponent } from '../edit-album/edit-album.component';
 
 @Component({
   selector: 'app-album-detail',
@@ -20,7 +20,7 @@ export class AlbumDetailComponent {
   }
 
   onEditAlbum() {
-    const dialogRef = this.dialog.open(EditAlbumComponent, { data: this.album, disableClose: true });
+    const dialogRef = this.dialog.open(ModifyAlbumComponent, { data: this.album, disableClose: true });
 
     dialogRef.afterClosed().subscribe(result => {
       let message = "";
@@ -32,8 +32,11 @@ export class AlbumDetailComponent {
           '/' + result.album.title +
           (result.album.favorite ? '/' + GlobalConstants.FAVORITE_STRING : '')
         ]);
+        console.log('/' + GlobalConstants.MY_ALBUMS_STRING +
+          '/' + result.album.title +
+          (result.album.favorite ? '/' + GlobalConstants.FAVORITE_STRING : ''))
       } else {
-        message = "Album '" + result.album.title + "' was not edited. :(";
+        message = "Album '" + this.album.album.title + "' was not edited. :(";
       }
 
 

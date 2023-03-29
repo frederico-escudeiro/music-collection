@@ -1,8 +1,8 @@
 <div id="container" fxLayout="column" fxLayoutAlign="space-around stretch">
     <mat-chip fxHide.lt-md disabled color="primary">ALBUM</mat-chip>
     <h1 fxFlexAlign="center"> {{ album.album.title }}</h1>
-    <p fxFlexAlign="center" id="favorite-symbol" class="material-symbols-rounded" [ngClass]="isFavorite ? 'fill' : ''"
-        (click)="onToggleFavorite()">favorite</p>
+    <span fxFlexAlign="center" id="favorite-symbol" class="material-symbols-rounded" [ngClass]="isFavorite ? 'fill' : ''"
+        (click)="onToggleFavorite()">favorite</span>
     <h2 fxFlexAlign="center">{{ album.artistName }}</h2>
     <div fxLayout="row" fxLayout.lt-md="column-reverse">
         <mat-list fxFlex="70" fxFlex.lt-md>

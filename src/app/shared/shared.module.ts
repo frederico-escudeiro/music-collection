@@ -2,12 +2,12 @@ import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { AddAlbumComponent } from "./add-album/add-album.component";
 import { MaterialModule } from "./material.module";
+import { ModifyAlbumComponent } from "./modify-album/modify-album.component";
 
 @NgModule({
     declarations:[
-        AddAlbumComponent
+        ModifyAlbumComponent
     ],
     imports:[
         CommonModule,

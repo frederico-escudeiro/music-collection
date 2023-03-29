@@ -6,7 +6,7 @@
     <div fxLayout="column" fxLayoutAlign="space-around stretch" class="breathing-room-top">
         <mat-form-field appearance="fill">
             <mat-label for="artist">Artist</mat-label>
-            <mat-select id="artist" formControlName="artist" [required]="allArtists !== null">
+            <mat-select id="artist" formControlName="artist" required>
                 <mat-option *ngFor="let artist of allArtists" [value]="artist">
                     {{artist.name}}
                 </mat-option>
@@ -14,8 +14,9 @@
         </mat-form-field>
         <mat-form-field appearance="fill">
             <mat-label for="album">Album</mat-label>
-            <mat-select id="album" formControlName="album" [required]="allArtists !== null">
-                <mat-option *ngFor="let album of selectedArtist!.albums" [value]="album">
+            <mat-select id="album" formControlName="album">
+                <mat-option label="--">--</mat-option>
+                <mat-option *ngFor="let album of selectedArtist!.albums"  [value]="album" required>
                     {{album.title}}
                 </mat-option>
             </mat-select>

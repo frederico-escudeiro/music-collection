@@ -19,6 +19,20 @@ export class HttpService {
     return this.favoriteSongs.getValue();
   }
 
+  private allAlbums = new BehaviorSubject<{ album: Album, artistName: string }[]>(this.getAlbumsDataFromDB());
+
+  get getAlbumsData() {
+    return this.allAlbums.getValue();
+  }
+
+  addToAlbumsData(album: Album, artistName: string) {
+    this.allAlbums.next([...this.allAlbums.getValue(), { album: album, artistName: artistName }]);
+  }
+
+  removeFromAlbumsData(albumTitle: string) {
+    this.allAlbums.next(this.allAlbums.getValue().filter(album => album.album?.title !== albumTitle));
+  }
+
   addToFavoriteSongs(album: Album, song: Song) {
     this.favoriteSongs.next([...this.favoriteSongs.getValue(), { album: album, song: song }]);
   }
@@ -29,16 +43,16 @@ export class HttpService {
 
   addToFavoriteAlbums(album: Album) {
     this.favoriteAlbums.next(this.favoriteAlbums.getValue().concat([album]));
-    console.log('add album' + album.title);
-    console.log(this.favoriteAlbums.getValue());
+    ('add album' + album.title);
+    (this.favoriteAlbums.getValue());
   }
 
   removeFromFavoriteAlbums(albumTitle: string) {
     this.favoriteAlbums.next(
       this.favoriteAlbums.getValue().filter(a => a.title !== albumTitle)
     );
-    console.log('remove album' + albumTitle);
-    console.log(this.favoriteAlbums.getValue());
+    ('remove album' + albumTitle);
+    (this.favoriteAlbums.getValue());
   }
 
 
@@ -63,7 +77,8 @@ export class HttpService {
     return result;
   }
 
-  getAlbumsData() {
+
+  getAlbumsDataFromDB() {
     var artistAlbums: {
       album: Album,
       artistName: string
@@ -171,7 +186,6 @@ export class HttpService {
       ?.songs.filter((song: Song) => song.title === songTitle)[0];
 
     if (songToUpdate === undefined) {
-      console.log("songToUpdate is " + songToUpdate);
       return;
     }
 
@@ -189,14 +203,13 @@ export class HttpService {
             album.songs[album.songs.indexOf(song)] = newSong;
             artist.albums[artist.albums.indexOf(album)] = album;
             collectionArray[collectionArray.indexOf(artist)] = artist;
-            //Como o titulo não altera:
+            this.removeFromAlbumsData(album.title);
+            this.addToAlbumsData(album, artist.name);
             if (setFavorite) {
               this.addToFavoriteSongs(album, newSong);
             } else {
               this.removeFromFavoriteSongs(newSong.title);
             }
-            console.log("FavoriteSongs:");
-            console.log(this.favoriteSongs.getValue());
           }
         })
       })
@@ -205,7 +218,7 @@ export class HttpService {
 
   updateWithEditedSong(input: { song: Song, albumTitle: string, artistName: string }, editedSong: Song, editedAlbum: Album, editedArtist: Artist) {
     if ((editedAlbum.title === input.albumTitle && editedArtist.name === input.artistName) || editedAlbum === null || editedArtist === null) {
-      //Só os parâmetros dentro da song são editados:
+      // Só os parâmetros dentro da song são editados:
       collectionArray.forEach(artist => {
         artist.albums.forEach(album => {
           album.songs.forEach(song => {
@@ -217,13 +230,13 @@ export class HttpService {
               album.songs[album.songs.indexOf(song)] = editedSong;
               artist.albums[artist.albums.indexOf(album)] = album;
               collectionArray[collectionArray.indexOf(artist)] = artist;
-              console.log(collectionArray);
+              this.removeFromAlbumsData(input.albumTitle);
+              this.addToAlbumsData(album, artist.name);
             }
           })
         })
       })
     } else {
-      //Se o album e o artista forem alterados (ou seja se a song mover-se para outro album e outro artista):
       this.deleteSong(input.song.title);
       collectionArray.forEach(artist => {
         if (artist.name === editedArtist.name) {
@@ -235,44 +248,51 @@ export class HttpService {
               album.songs.push(editedSong);
               artist.albums[artist.albums.indexOf(album)] = album;
               collectionArray[collectionArray.indexOf(artist)] = artist;
+              this.removeFromAlbumsData(input.albumTitle);
+              this.addToAlbumsData(album, artist.name);
             }
           });
         }
       });
-      console.log(collectionArray);
     }
   }
 
   updateWithEditedAlbum(input: any, editedAlbum: Album, editedArtist: Artist) {
     if (editedArtist.name === input.artistName || editedArtist === null) {
-      //Só os parâmetros dentro da song são editados:
       collectionArray.forEach(artist => {
         artist.albums.forEach(album => {
-          //Se encontrar o album pretendido
-          if (album.title === input.album.title) {
+          if (album.title === input.album.title) { 
             if (input.album.favorite) {
               this.removeFromFavoriteAlbums(input.album.title);
               this.addToFavoriteAlbums(editedAlbum);
             }
+            editedAlbum.songs.map(editedSong => {
+              for (let inputSong of input.album.songs) {
+                if (inputSong.title === editedSong.title) {
+                  editedSong.favorite = inputSong.favorite;
+                  break;
+                }
+              }
+            })
             artist.albums[artist.albums.indexOf(album)] = editedAlbum;
             collectionArray[collectionArray.indexOf(artist)] = artist;
-            console.log(collectionArray);
+            this.removeFromAlbumsData(input.album.title);
+            this.addToAlbumsData(editedAlbum, artist.name);
           }
         })
       })
     } else {
       this.deleteAlbum(input.album.title);
       collectionArray.forEach(artist => {
-        if (artist.name === editedArtist.name) {
+        if (artist.name === input.artistName) {
           if (input.album.favorite) {
             this.addToFavoriteAlbums(editedAlbum);
-          } 
+          }
           artist.albums.push(editedAlbum);
           collectionArray[collectionArray.indexOf(artist)] = artist;
+          this.addToAlbumsData(editedAlbum, artist.name);
         }
-        collectionArray[collectionArray.indexOf(artist)] = artist;
       })
-      console.log(collectionArray);
     }
   }
 
@@ -282,6 +302,7 @@ export class HttpService {
         if (album.title === albumTitle) {
           artist.albums = artist.albums.filter(album => albumTitle !== album.title);
           collectionArray[collectionArray.indexOf(artist)] = artist;
+          this.removeFromAlbumsData(album.title);
           if (album.favorite) {
             this.removeFromFavoriteAlbums(album.title);
           }
@@ -301,9 +322,10 @@ export class HttpService {
             album.songs = album.songs.filter(song => songTitle !== song.title);
             artist.albums[artist.albums.indexOf(album)] = album;
             collectionArray[collectionArray.indexOf(artist)] = artist;
+            this.removeFromAlbumsData(album.title);
+            this.addToAlbumsData(album, artist.name);
             if (song.favorite) {
               this.removeFromFavoriteSongs(song.title);
-              console.log(song);
             }
           }
         })
@@ -330,6 +352,8 @@ export class HttpService {
         if (album.title === albumToUpdate?.title) {
           artist.albums[artist.albums.indexOf(album)] = favoriteAlbum;
           collectionArray[collectionArray.indexOf(artist)] = artist;
+          this.removeFromAlbumsData(album.title);
+          this.addToAlbumsData(favoriteAlbum, artist.name);
           if (setFavorite) {
             this.addToFavoriteAlbums(favoriteAlbum);
           } else {
@@ -346,6 +370,7 @@ export class HttpService {
       if (selectedArtist === artist) {
         artist.albums.push(newAlbum);
         collectionArray[collectionArray.indexOf(artist)] = artist;
+        this.addToAlbumsData(newAlbum, selectedArtist.name);
       }
     })
   }
@@ -363,7 +388,7 @@ export class HttpService {
   }
 
   filterDuplicateSongsInAlbum(createdAlbum: Album): Album {
-    console.log(createdAlbum);
+    (createdAlbum);
     const existingSongs = new Set<string>();
     const filteredSongs = createdAlbum.songs.filter(song => {
       const isDuplicate = existingSongs.has(song.title);
