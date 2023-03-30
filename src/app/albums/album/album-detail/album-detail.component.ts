@@ -32,9 +32,6 @@ export class AlbumDetailComponent {
           '/' + result.album.title +
           (result.album.favorite ? '/' + GlobalConstants.FAVORITE_STRING : '')
         ]);
-        console.log('/' + GlobalConstants.MY_ALBUMS_STRING +
-          '/' + result.album.title +
-          (result.album.favorite ? '/' + GlobalConstants.FAVORITE_STRING : ''))
       } else {
         message = "Album '" + this.album.album.title + "' was not edited. :(";
       }
