@@ -245,10 +245,13 @@ export class HttpService {
               if (input.song.favorite) {
                 this.addToFavoriteSongs(album, editedSong);
               }
+              this.removeFromAlbumsData(input.albumTitle);
+              this.removeFromAlbumsData(editedAlbum.title);
+              let albumInput: Album = this.getAlbumByTitle(input.albumTitle).album;
               album.songs.push(editedSong);
               artist.albums[artist.albums.indexOf(album)] = album;
               collectionArray[collectionArray.indexOf(artist)] = artist;
-              this.removeFromAlbumsData(input.albumTitle);
+              this.addToAlbumsData(albumInput, input.artistName);
               this.addToAlbumsData(album, artist.name);
             }
           });
@@ -261,7 +264,7 @@ export class HttpService {
     if (editedArtist.name === input.artistName || editedArtist === null) {
       collectionArray.forEach(artist => {
         artist.albums.forEach(album => {
-          if (album.title === input.album.title) { 
+          if (album.title === input.album.title) {
             if (input.album.favorite) {
               this.removeFromFavoriteAlbums(input.album.title);
               this.addToFavoriteAlbums(editedAlbum);

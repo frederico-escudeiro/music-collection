@@ -85,7 +85,6 @@ export class SongComponent implements OnInit {
       let message = "";
 
       if (result !== undefined) {
-        (result.song);
         this.httpService.updateWithEditedSong(this.song, result.song, result.album, result.artist);
 
         message = "Song '" + result.song.title + "'  was successfully edited! :)";
