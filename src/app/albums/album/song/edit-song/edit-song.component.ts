@@ -24,7 +24,7 @@ export class EditSongComponent {
     this.songToEdit = data.song
     this.formGroup = new FormGroup({
       artist: new FormControl<Artist>(this.selectedArtist!, Validators.required),
-      album: new FormControl<Album |null>(this.selectedAlbum!, Validators.required),
+      album: new FormControl<Album | null>(this.selectedAlbum!, Validators.required),
       title: new FormControl(this.songToEdit.title, Validators.required),
       length: new FormControl(this.songToEdit.length, [Validators.pattern("^[0-5]?[0-9]:[0-5][0-9]$"), Validators.required])
     }, Validators.required);
@@ -34,9 +34,9 @@ export class EditSongComponent {
     this.formGroup.get('artist')?.valueChanges.subscribe((selectedValue: Artist) => {
       this.selectedArtist = selectedValue;
       this.selectedAlbum = null;
-      this.formGroup.get('album')?.setValue("--");
+      this.formGroup.get('album')?.setValue("");
     })
-  
+
   }
 
   onEditSong() {
@@ -44,7 +44,7 @@ export class EditSongComponent {
     let album = this.formGroup.get('album')?.value;
     let songTitle = this.formGroup.get('title')?.value;
     let songLength = this.formGroup.get('length')?.value;
-    let song = new Song( songTitle , songLength , this.songToEdit.favorite);
+    let song = new Song(songTitle, songLength, this.songToEdit.favorite);
     this.dialogRef.close(
       {
         artist: artist,
