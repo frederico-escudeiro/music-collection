@@ -1,9 +1,12 @@
 export interface Artist {
+    id?:string,
     name: string,
-    albums: Album[]
+    albums: Album[],
 }
 
 export interface Album {
+    id?:string,
+    parentId?:string,
     title: string,
     songs: Song[],
     description: string,
@@ -11,6 +14,8 @@ export interface Album {
 }
 
 export interface Song {
+    id?:string,
+    parentId?:string,
     title: string,
     length: string,
     favorite?: boolean
@@ -54,5 +59,3 @@ export class InputAlbum implements Album {
     }
 
 }
-
-

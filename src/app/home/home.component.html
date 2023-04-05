@@ -5,7 +5,7 @@
     <h2 fxFlexAlign="center">My Artists</h2>
 
     <mat-accordion #active>
-        <mat-expansion-panel *ngFor="let artist of artists" hideToggle>
+        <mat-expansion-panel *ngFor="let artist of artists$ | async" hideToggle>
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     {{ artist.name }}

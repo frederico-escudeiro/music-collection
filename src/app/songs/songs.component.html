@@ -5,9 +5,12 @@
     <mat-list fxFlexAlign="stretch">
         <h3>Songs</h3>
         <mat-divider></mat-divider>
-        <mat-list-item *ngFor="let song of songs" (click)="onLoadSongByTitle(song.song.title)">
+        <mat-list-item *ngFor="let song of (songs$ | async)" (click)="onLoadSongByTitle(song.title)">
+            <strong>{{song.title}}</strong>
+        </mat-list-item>
+        <!-- <mat-list-item *ngFor="let song of songs" (click)="onLoadSongByTitle(song.song.title)">
             <strong>{{song.song.title}}</strong>
             <br>{{song.artistName}}
-        </mat-list-item>
+        </mat-list-item> -->
     </mat-list>
 </div>

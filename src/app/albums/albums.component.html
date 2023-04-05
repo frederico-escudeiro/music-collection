@@ -8,8 +8,11 @@
         </div>
 
         <mat-divider></mat-divider>
-        <mat-list-item *ngFor="let artistAlbum of artistAlbums" (click)="onLoadAlbumByTitle(artistAlbum.album)">
-            <strong>{{artistAlbum.album.title}}</strong><br> {{artistAlbum.artistName}}
+        <mat-list-item *ngFor="let album of (albums$ | async)" (click)="onLoadAlbum(album)">
+            <strong>{{album.title}}</strong>
         </mat-list-item>
+        <!-- <mat-list-item *ngFor="let artistAlbum of artistAlbums" (click)="onLoadAlbumByTitle(artistAlbum.album)">
+            <strong>{{artistAlbum.album.title}}</strong><br> {{artistAlbum.artistName}}
+        </mat-list-item> -->
     </mat-list>
 </div>

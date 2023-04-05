@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import jsonData from '../../assets/json/artists_albuns.json';
 import { Song, Album, Artist } from 'src/app/shared/types.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { v4 as uuid } from 'uuid';
 
 
 
@@ -12,8 +13,39 @@ let collectionArray: Artist[] = jsonData;
 })
 export class HttpService {
 
+  constructor() {
+    this.initIds();
+  }
+
+  initIds() {
+    collectionArray = collectionArray.map(artist => {
+      artist.id = uuid();
+      artist.albums.map(album => {
+        album.parentId = artist.id;
+        album.id = uuid();
+        album.songs.map(song => {
+          song.parentId = album.id;
+          song.id = uuid();
+          return song;
+        })
+        return album;
+      })
+      return artist;
+    })
+  }
+  private artistsData$ = new BehaviorSubject<Artist[]>(collectionArray)
+  private albumsData$ = new BehaviorSubject<Album[]>(this.getAllAlbumsData())
+  private songsData$ = new BehaviorSubject<Song[]>(this.getAllSongsData())
   private favoriteSongs = new BehaviorSubject<{ album: Album, song?: Song }[]>([]);
   private favoriteAlbums = new BehaviorSubject<Album[]>([]);
+
+  get getAllAlbums() {
+    return this.albumsData$;
+  }
+
+  get getAllSongs(){
+    return this.songsData$;
+  }
 
   get getFavoriteSongs() {
     return this.favoriteSongs.getValue();
@@ -43,16 +75,12 @@ export class HttpService {
 
   addToFavoriteAlbums(album: Album) {
     this.favoriteAlbums.next(this.favoriteAlbums.getValue().concat([album]));
-    ('add album' + album.title);
-    (this.favoriteAlbums.getValue());
   }
 
   removeFromFavoriteAlbums(albumTitle: string) {
     this.favoriteAlbums.next(
       this.favoriteAlbums.getValue().filter(a => a.title !== albumTitle)
     );
-    ('remove album' + albumTitle);
-    (this.favoriteAlbums.getValue());
   }
 
 
@@ -61,10 +89,9 @@ export class HttpService {
   }
 
 
-
-
-  getArtistsData() {
-    return collectionArray;
+  get getAllArtists(): BehaviorSubject<Artist[]> {
+    this.artistsData$.next(collectionArray);
+    return this.artistsData$;
   }
 
   getArtistByName(artistName: string): Artist | null {
@@ -77,6 +104,15 @@ export class HttpService {
     return result;
   }
 
+  getAllAlbumsData() {
+    let resAlbums: Album[] = [];
+    collectionArray.forEach(artist => {
+      artist.albums.forEach(album => {
+        resAlbums.push(album)
+      })
+    })
+    return resAlbums;
+  }
 
   getAlbumsDataFromDB() {
     var artistAlbums: {
@@ -113,7 +149,18 @@ export class HttpService {
     return result;
   }
 
+  getAllSongsData() {
+    var songs: Song[] = [];
 
+    collectionArray.forEach(artist => {
+      artist.albums.forEach(album => {
+        album.songs.forEach(song => {
+          songs.push(song);
+        })
+      })
+    })
+    return songs;
+  }
 
   getSongData() {
     var songs: {

@@ -18,7 +18,7 @@ export class EditSongComponent {
   songToEdit: Song;
 
   constructor(public dialogRef: MatDialogRef<SongComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private httpService: HttpService) {
-    this.allArtists = this.httpService.getArtistsData();
+    this.allArtists = this.httpService.getAllArtists.getValue();
     this.selectedArtist = this.httpService.getArtistByName(data.artistName);
     this.selectedAlbum = this.selectedArtist?.albums?.find(album => album.title === data.albumTitle);
     this.songToEdit = data.song

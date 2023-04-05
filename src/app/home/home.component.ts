@@ -1,24 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { Album, Artist } from 'src/app/shared/types.model';
 import { HttpService } from '../http/http.service';
 import { GlobalConstants } from '../shared/global-constants.enum';
 import { ModifyAlbumComponent } from '../shared/modify-album/modify-album.component';
+import { AppState } from '../store/app.state';
+import { selectAllArtists } from '../core/selectors/home.selectors';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  artists: Artist[];
+  artists$!: Observable<Artist[]>;
 
   constructor(public dialog: MatDialog, private httpService: HttpService, private snackBar: MatSnackBar,
-    private router:Router) {
-    this.artists = this.httpService.getArtistsData();
+    private router: Router, private store: Store<AppState>) {
+
+  }
+  ngOnInit(): void {
+    this.artists$ = this.store.pipe(select(selectAllArtists))
+    //this.artists = this.httpService.getArtistsData().getValue();
   }
 
   openDialog(artist: Artist): void {
@@ -50,7 +59,7 @@ export class HomeComponent {
 
   }
 
-  onGoToAlbum(albumTitle:string){
+  onGoToAlbum(albumTitle: string) {
     this.router.navigate(['/' + GlobalConstants.MY_ALBUMS_STRING + '/' + albumTitle])
   }
 

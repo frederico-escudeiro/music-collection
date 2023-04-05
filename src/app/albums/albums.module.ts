@@ -4,8 +4,14 @@ import { AlbumComponent } from "./album/album.component";
 import { AlbumsComponent } from "./albums.component";
 import { AlbumDetailComponent } from './album/album-detail/album-detail.component';
 import { SharedModule } from "../shared/shared.module";
-import { AlbumsRoutingModule } from "./album/album-routing.module";
+import { AlbumsRoutingModule } from "./albums-routing.module";
 import { EditSongComponent } from './album/song/edit-song/edit-song.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { reduce } from 'rxjs';
+import { albumsReducer } from '../core/reducers/albums.reducers';
+import { AlbumsResolver } from './albums.resolver';
+import { AlbumsEffects } from '../core/effects/albums.effects';
 
 @NgModule({
     declarations: [
@@ -17,7 +23,9 @@ import { EditSongComponent } from './album/song/edit-song/edit-song.component';
     ],
     imports: [
         SharedModule,
-        AlbumsRoutingModule
+        AlbumsRoutingModule,
+        StoreModule.forFeature("albums", albumsReducer),
+        EffectsModule.forFeature([AlbumsEffects])
     ],
 
     exports: [

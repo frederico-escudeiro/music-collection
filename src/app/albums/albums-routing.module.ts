@@ -2,13 +2,14 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { GlobalConstants } from "src/app/shared/global-constants.enum";
 import { SongsGuardService } from "src/app/songs/songs.guard";
-import { AlbumsComponent } from "../albums.component";
-import { AlbumsGuardService } from "../albums.guard";
-import { AlbumComponent } from "./album.component";
-import { SongComponent } from "./song/song.component";
+import { AlbumsComponent } from "./albums.component";
+import { AlbumsGuardService } from "./albums.guard";
+import { AlbumComponent } from "./album/album.component";
+import { SongComponent } from "./album/song/song.component";
+import { AlbumsResolver } from "./albums.resolver";
 
 const albumsRoutes = [
-    { path: '', component: AlbumsComponent },
+    { path: '', component: AlbumsComponent, resolve: {albums:AlbumsResolver} },
     {
         path: ':' + GlobalConstants.ALBUM_TITLE_STRING,
         component: AlbumComponent,
@@ -30,7 +31,7 @@ const albumsRoutes = [
     imports:[
         RouterModule.forChild(albumsRoutes)
     ],
-    providers: [AlbumsGuardService, SongsGuardService],
+    providers: [AlbumsGuardService, AlbumsResolver, SongsGuardService],
     exports: [RouterModule]
     })
 export class AlbumsRoutingModule {

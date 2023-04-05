@@ -25,7 +25,7 @@ export class ModifyAlbumComponent {
 		private httpService: HttpService
 	) {
 		this.isEditing = !!data;
-		this.allArtists = this.httpService.getArtistsData();
+		this.allArtists = this.httpService.getAllArtists.getValue();
 		this.formGroup = new FormGroup({
 			artist: new FormControl<Artist | null>(this.isEditing ? this.httpService.getArtistByName(data.artistName!) : null),
 			title: new FormControl(this.isEditing ? data.album.title : null, Validators.required),
