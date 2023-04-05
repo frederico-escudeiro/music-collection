@@ -14,8 +14,8 @@ export class FavoritesComponent {
   favoriteAlbums: Album[];
 
   constructor(private httpService: HttpService, private router: Router) {
-    this.favoriteSongs = this.httpService.getFavoriteSongs;
-    this.favoriteAlbums = this.httpService.getFavoriteAlbums;
+    this.favoriteSongs = this.httpService.getFavoriteSongs.getValue();
+    this.favoriteAlbums = this.httpService.getFavoriteAlbums.getValue();
   }
 
   onNavigateToFavorite(item: any) {

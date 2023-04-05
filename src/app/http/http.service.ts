@@ -36,19 +36,24 @@ export class HttpService {
   private artistsData$ = new BehaviorSubject<Artist[]>(collectionArray)
   private albumsData$ = new BehaviorSubject<Album[]>(this.getAllAlbumsData())
   private songsData$ = new BehaviorSubject<Song[]>(this.getAllSongsData())
-  private favoriteSongs = new BehaviorSubject<{ album: Album, song?: Song }[]>([]);
-  private favoriteAlbums = new BehaviorSubject<Album[]>([]);
+  private favoriteSongs$ = new BehaviorSubject<{ album: Album, song?: Song }[]>([]);
+  private favoriteAlbums$ = new BehaviorSubject<Album[]>([]);
 
   get getAllAlbums() {
     return this.albumsData$;
   }
 
-  get getAllSongs(){
+  get getAllSongs() {
     return this.songsData$;
   }
 
   get getFavoriteSongs() {
-    return this.favoriteSongs.getValue();
+    return this.favoriteSongs$;
+  }
+
+  get getFavoriteAlbums() {
+   // this.favoriteAlbums$.next([collectionArray[0].albums[0]])
+    return this.favoriteAlbums$;
   }
 
   private allAlbums = new BehaviorSubject<{ album: Album, artistName: string }[]>(this.getAlbumsDataFromDB());
@@ -66,27 +71,24 @@ export class HttpService {
   }
 
   addToFavoriteSongs(album: Album, song: Song) {
-    this.favoriteSongs.next([...this.favoriteSongs.getValue(), { album: album, song: song }]);
+    this.favoriteSongs$.next([...this.favoriteSongs$.getValue(), { album: album, song: song }]);
   }
 
   removeFromFavoriteSongs(songTitle: string) {
-    this.favoriteSongs.next(this.favoriteSongs.getValue().filter(s => s.song?.title !== songTitle));
+    this.favoriteSongs$.next(this.favoriteSongs$.getValue().filter(s => s.song?.title !== songTitle));
   }
 
   addToFavoriteAlbums(album: Album) {
-    this.favoriteAlbums.next(this.favoriteAlbums.getValue().concat([album]));
+    this.favoriteAlbums$.next(this.favoriteAlbums$.getValue().concat([album]));
   }
 
   removeFromFavoriteAlbums(albumTitle: string) {
-    this.favoriteAlbums.next(
-      this.favoriteAlbums.getValue().filter(a => a.title !== albumTitle)
+    this.favoriteAlbums$.next(
+      this.favoriteAlbums$.getValue().filter(a => a.title !== albumTitle)
     );
   }
 
 
-  get getFavoriteAlbums() {
-    return this.favoriteAlbums.getValue();
-  }
 
 
   get getAllArtists(): BehaviorSubject<Artist[]> {

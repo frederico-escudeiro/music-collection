@@ -1,7 +1,7 @@
 import { Album } from "src/app/shared/types.model";
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from "@ngrx/store";
-import { AlbumsActions } from "src/app/store/action-types";
+import { AlbumsActions } from "src/app/core/store/action-types";
 
 
 export interface AlbumsState extends EntityState<Album>{

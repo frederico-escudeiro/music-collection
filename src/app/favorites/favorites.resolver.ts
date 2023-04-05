@@ -3,11 +3,11 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/r
 import { Store } from "@ngrx/store";
 import { finalize, first, Observable, tap } from "rxjs";
 import { AppState } from "../core/store/app.state";
-import { AlbumsActions } from "../core/store/action-types";
+import { FavoriteAlbumsActions, FavoriteSongsActions } from "../core/store/action-types";
 
 
 @Injectable()
-export class AlbumsResolver implements Resolve<any>{
+export class FavoritesResolver implements Resolve<any>{
 
     loading = false;
 
@@ -19,7 +19,8 @@ export class AlbumsResolver implements Resolve<any>{
                 tap(() => {
                     if (!this.loading) {
                         this.loading = true;
-                        this.store.dispatch(AlbumsActions.loadAllAlbums())
+                        this.store.dispatch(FavoriteAlbumsActions.loadFavoriteAlbums())
+                        this.store.dispatch(FavoriteSongsActions.loadFavoriteSongs())
                     }
                 }),
                 first(),

@@ -9,7 +9,7 @@ import { Album, Artist } from 'src/app/shared/types.model';
 import { HttpService } from '../http/http.service';
 import { GlobalConstants } from '../shared/global-constants.enum';
 import { ModifyAlbumComponent } from '../shared/modify-album/modify-album.component';
-import { AppState } from '../store/app.state';
+import { AppState } from '../core/store/app.state';
 import { selectAllArtists } from '../core/selectors/home.selectors';
 
 @Component({

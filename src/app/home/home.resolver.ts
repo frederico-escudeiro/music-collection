@@ -2,8 +2,8 @@ import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { finalize, first, tap } from "rxjs";
-import { AppState } from "../store/app.state";
-import { ArtistsActions } from "../store/action-types";
+import { AppState } from "../core/store/app.state";
+import { ArtistsActions } from "../core/store/action-types";
 import { loadAllArtists } from "../core/actions/home.actions";
 
 @Injectable()

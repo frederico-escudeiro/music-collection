@@ -8,4 +8,3 @@ export const selectAllAlbums = createSelector(
     selectAlbumsState,
     fromAlbums.selectAll
 )
-

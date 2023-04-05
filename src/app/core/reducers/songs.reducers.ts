@@ -1,7 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { Song } from "src/app/shared/types.model";
-import { SongsActions } from "src/app/store/action-types";
+import { SongsActions } from "src/app/core/store/action-types";
 
 export interface SongsState extends EntityState<Song> {
 

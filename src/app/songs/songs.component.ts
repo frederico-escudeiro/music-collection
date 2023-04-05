@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { GlobalConstants } from 'src/app/shared/global-constants.enum';
 import { HttpService } from '../http/http.service';
 import { Song } from '../shared/types.model';
-import { AppState } from '../store/app.state';
+import { AppState } from '../core/store/app.state';
 import { selectAllSongs } from '../core/selectors/songs.selectors';
 
 @Component({
