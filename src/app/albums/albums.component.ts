@@ -8,7 +8,10 @@ import { GlobalConstants } from 'src/app/shared/global-constants.enum';
 import { Album, Artist } from 'src/app/shared/types.model';
 import { HttpService } from '../http/http.service';
 import { ModifyAlbumComponent } from '../shared/modify-album/modify-album.component';
-import { selectAllAlbums } from '../core/selectors/albums.selectors';
+import { selectAlbumEntities, selectAllAlbums } from '../core/selectors/albums.selectors';
+import { AlbumsActions } from '../core/store/action-types';
+import { AppState } from '../core/store/app.reducers';
+import { selectEntities } from '../core/reducers/albums.reducers';
 
 @Component({
   selector: 'app-albums',
@@ -17,7 +20,6 @@ import { selectAllAlbums } from '../core/selectors/albums.selectors';
 })
 export class AlbumsComponent implements OnInit {
 
-  artistAlbums: { album: Album, artistName: string }[];
   albums$!: Observable<Album[]>;
 
   constructor(
@@ -25,8 +27,7 @@ export class AlbumsComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private store: Store) {
-    this.artistAlbums = this.httpService.getAlbumsData;
+    private store: Store<AppState>) {
   }
 
   ngOnInit(): void {
@@ -37,28 +38,22 @@ export class AlbumsComponent implements OnInit {
   }
 
   onLoadAlbum(album: Album) {
+    console.log(album);
+    console.log('/' + GlobalConstants.MY_ALBUMS_STRING + '/' + album.title + (album.favorite ? '/' + GlobalConstants.FAVORITE_STRING : ''));
     this.router.navigate(['/' + GlobalConstants.MY_ALBUMS_STRING + '/' + album.title + (album.favorite ? '/' + GlobalConstants.FAVORITE_STRING : '')]);
   }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(ModifyAlbumComponent, { disableClose: true });
 
-    dialogRef.afterClosed().subscribe((result: { artist: Artist, album: Album }) => {
+    dialogRef.afterClosed().subscribe((result: { album: Album }) => {
       let message = "";
-      if (result === undefined || result.album === undefined || result.artist === undefined) {
+      if (result === undefined || result.album === undefined) {
         message = "No Album was created! :(";
       } else {
-
         let createdAlbum: Album = result.album;
-
-        if (!this.httpService.existsDuplicateAlbum(createdAlbum.title)) {
-          createdAlbum = this.httpService.filterDuplicateSongsInAlbum(createdAlbum);
-          this.httpService.postNewAlbumData(createdAlbum, result.artist);
-          this.artistAlbums = this.httpService.getAlbumsData;
-          message = "The Album '" + createdAlbum.title + "' was successfully created!";
-        } else {
-          message = "The Album '" + createdAlbum.title + "' was not created";
-        }
+        this.store.dispatch(AlbumsActions.addNewAlbum({ album: createdAlbum }))
+        message = "The Album '" + createdAlbum.title + "' was successfully created!";
       }
 
       let snackBarRef = this.snackBar.open(message);
@@ -69,4 +64,5 @@ export class AlbumsComponent implements OnInit {
       )
     });
   }
+
 }

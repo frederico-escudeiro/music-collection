@@ -18,10 +18,7 @@ import { HomeEffects } from '../core/effects/home.effects';
         HomeRoutingModule,
         SharedModule,
         EffectsModule.forFeature([HomeEffects]),
-        StoreModule.forFeature(
-            'artists',
-            artistsReducer
-        )
+        StoreModule.forFeature('artists',artistsReducer)
     ],
     providers: [
         HomeResolver

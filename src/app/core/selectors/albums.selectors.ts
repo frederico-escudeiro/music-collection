@@ -8,3 +8,8 @@ export const selectAllAlbums = createSelector(
     selectAlbumsState,
     fromAlbums.selectAll
 )
+
+export const selectAlbumEntities = createSelector(
+    selectAlbumsState,
+    fromAlbums.selectEntities
+)

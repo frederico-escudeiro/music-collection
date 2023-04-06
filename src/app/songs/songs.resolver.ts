@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { finalize, first, tap } from "rxjs";
-import { AppState } from "../core/store/app.state";
+import { AppState } from "../core/store/app.reducers";
 import { SongsActions } from "../core/store/action-types";
 
 @Injectable()

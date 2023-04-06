@@ -88,9 +88,6 @@ export class HttpService {
     );
   }
 
-
-
-
   get getAllArtists(): BehaviorSubject<Artist[]> {
     this.artistsData$.next(collectionArray);
     return this.artistsData$;
@@ -416,13 +413,12 @@ export class HttpService {
     });
   }
 
-  postNewAlbumData(newAlbum: Album, selectedArtist: Artist) {
+  postNewAlbumData(newAlbum: Album) {
 
     collectionArray.forEach(artist => {
-      if (selectedArtist === artist) {
-        artist.albums.push(newAlbum);
+      if (newAlbum.parentId === artist.id && artist.id !== undefined) {
+        artist.albums.push(newAlbum)
         collectionArray[collectionArray.indexOf(artist)] = artist;
-        this.addToAlbumsData(newAlbum, selectedArtist.name);
       }
     })
   }

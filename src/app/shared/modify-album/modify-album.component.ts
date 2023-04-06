@@ -1,11 +1,16 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { AlbumComponent } from 'src/app/albums/album/album.component';
 import { AlbumsComponent } from 'src/app/albums/albums.component';
+import { selectAllArtists } from 'src/app/core/selectors/home.selectors';
+import { AppState } from 'src/app/core/store/app.reducers';
 import { HttpService } from 'src/app/http/http.service';
 import { Album, Artist, Song } from 'src/app/shared/types.model';
 import { HomeComponent } from '../../home/home.component';
+import { v4 as uuid } from 'uuid';
 
 
 @Component({
@@ -16,16 +21,18 @@ import { HomeComponent } from '../../home/home.component';
 export class ModifyAlbumComponent {
 	formGroup: FormGroup;
 	inputAlbum: Album | undefined;
-	allArtists: Artist[];
+	allArtists$: Observable<Artist[]>;
 	isEditing: boolean;
 
 	constructor(
 		public dialogRef: MatDialogRef<HomeComponent | AlbumsComponent | AlbumComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: { artistName: string | undefined, album: Album },
-		private httpService: HttpService
+		private httpService: HttpService,
+		private store: Store<AppState>
 	) {
 		this.isEditing = !!data;
-		this.allArtists = this.httpService.getAllArtists.getValue();
+		this.allArtists$ = this.store.pipe(select(selectAllArtists))
+		//this.allArtists$ = this.httpService.getAllArtists.getValue();
 		this.formGroup = new FormGroup({
 			artist: new FormControl<Artist | null>(this.isEditing ? this.httpService.getArtistByName(data.artistName!) : null),
 			title: new FormControl(this.isEditing ? data.album.title : null, Validators.required),
@@ -54,17 +61,23 @@ export class ModifyAlbumComponent {
 	}
 
 	onSubmit() {
+		const artist: Artist | null = this.formGroup.get('artist')?.value;
+		const songs: Song[] = this.getSongArray.value;
 		const album =
 			new Album(
 				this.formGroup.get('title')?.value,
 				this.formGroup.get('description')?.value,
-				this.getSongArray.value);
+				songs,
+				artist?.id,
+				false
+			);
+		songs.map(song => {
+			song.id = uuid();
+			song.parentId = album.id;
+		});
 		if (this.isEditing) {
 			album.favorite = this.data.album.favorite;
 		}
-		let artist: Artist | null;
-		artist = this.formGroup.get('artist')?.value;
-
 		this.dialogRef.close({ artist: artist, album: album });
 	}
 

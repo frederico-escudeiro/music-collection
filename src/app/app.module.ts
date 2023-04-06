@@ -10,6 +10,7 @@ import { SharedModule } from './shared/shared.module';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
+import { AlbumsEffects } from './core/effects/albums.effects';
 
 @NgModule({
   declarations: [

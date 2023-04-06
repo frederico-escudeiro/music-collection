@@ -9,8 +9,9 @@ import { Album, Artist } from 'src/app/shared/types.model';
 import { HttpService } from '../http/http.service';
 import { GlobalConstants } from '../shared/global-constants.enum';
 import { ModifyAlbumComponent } from '../shared/modify-album/modify-album.component';
-import { AppState } from '../core/store/app.state';
+import { AppState } from '../core/store/app.reducers';
 import { selectAllArtists } from '../core/selectors/home.selectors';
+import { AlbumsActions } from '../core/store/action-types';
 
 @Component({
   selector: 'app-home',
@@ -39,16 +40,10 @@ export class HomeComponent implements OnInit {
         message = "No Album was created! :(";
       } else {
         let createdAlbum: Album = result.album;
-
-        if (!this.httpService.existsDuplicateAlbum(createdAlbum.title)) {
-          createdAlbum = this.httpService.filterDuplicateSongsInAlbum(createdAlbum);
-          this.httpService.postNewAlbumData(createdAlbum, artist);
-          message = "The Album '" + createdAlbum.title + "' was successfully created!";
-        } else {
-          message = "The Album '" + createdAlbum.title + "' was not created, as it already exists in this Artist.";
-        }
+        this.store.dispatch(AlbumsActions.editAlbum({ album: createdAlbum }))
+        //this.httpService.postNewAlbumData(createdAlbum);
+        message = "The Album '" + createdAlbum.title + "' was successfully created!";
       }
-
       let snackBarRef = this.snackBar.open(message);
       setTimeout(() => {
         snackBarRef.dismiss()

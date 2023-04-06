@@ -9,7 +9,7 @@ import { SongComponent } from "./album/song/song.component";
 import { AlbumsResolver } from "./albums.resolver";
 
 const albumsRoutes = [
-    { path: '', component: AlbumsComponent, resolve: {albums:AlbumsResolver} },
+    { path: '', component: AlbumsComponent, resolve: { albums:AlbumsResolver } },
     {
         path: ':' + GlobalConstants.ALBUM_TITLE_STRING,
         component: AlbumComponent,

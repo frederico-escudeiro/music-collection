@@ -3,9 +3,12 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { OnInit } from '@angular/core';
 import { HttpService } from 'src/app/http/http.service';
 import { Router } from '@angular/router';
-import { Song } from 'src/app/shared/types.model';
+import { Album, Song } from 'src/app/shared/types.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GlobalConstants } from 'src/app/shared/global-constants.enum';
+import { select, Store } from '@ngrx/store';
+import { selectAllAlbums } from 'src/app/core/selectors/albums.selectors';
+import { AppState } from 'src/app/core/store/app.reducers';
 
 @Component({
   selector: 'app-album',
@@ -15,17 +18,24 @@ import { GlobalConstants } from 'src/app/shared/global-constants.enum';
 export class AlbumComponent implements OnInit {
 
   albumTitle: string = "";
-  album: any;
+  album!: Album;
   isFavorite: boolean = false;
 
-  constructor(private route: ActivatedRoute, private router: Router, private httpService: HttpService, private snackBar: MatSnackBar) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private store: Store<AppState>) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(
       (params: Params) => {
         this.albumTitle = params[GlobalConstants.ALBUM_TITLE_STRING];
-        this.album = this.httpService.getAlbumByTitle(this.albumTitle);
-        this.isFavorite = !!this.album.album.favorite;
+        this.store.pipe(select(selectAllAlbums)).subscribe(albums => {
+          this.album = albums.find(album => album.title === this.albumTitle)!
+        });
+        this.isFavorite = !!this.album.favorite;
+       // this.isFavorite = !!this.album.album.favorite;
       }
     );
 
@@ -38,20 +48,22 @@ export class AlbumComponent implements OnInit {
 
   onToggleFavorite() {
     this.isFavorite = !this.isFavorite;
-    this.album.album.favorite = this.isFavorite;
+    this.album.favorite = this.isFavorite;
+    //this.album.album.favorite = this.isFavorite;
     this.router.navigate(['/' + GlobalConstants.MY_ALBUMS_STRING + '/'
       + this.route.snapshot.paramMap.get(GlobalConstants.ALBUM_TITLE_STRING)
       + (this.isFavorite ? '/' + GlobalConstants.FAVORITE_STRING : '')]
     );
-    this.httpService.updateAlbumDataWithFavorite(
-      this.albumTitle,
-      this.album.artistName,
-      this.isFavorite
-    )
-    this.handleSnackBar();
+    // this.httpService.updateAlbumDataWithFavorite(
+    //   this.albumTitle,
+    //   this.album.artistName,
+    //   this.isFavorite
+    // )
+    //put favorite album in store
+    this.favoriteToggleSnackbar();
   }
 
-  handleSnackBar() {
+  favoriteToggleSnackbar() {
     let message = "The album '" + this.albumTitle + "' was " + (this.isFavorite ? 'added to' : 'removed from') + " favorites!"
     let snackBarRef = this.snackBar.open(message);
     setTimeout(() => {

@@ -1,3 +1,5 @@
+import { v4 as uuid } from 'uuid';
+
 export interface Artist {
     id?:string,
     name: string,
@@ -22,40 +24,21 @@ export interface Song {
 }
 
 export class Album implements Album {
-    constructor(title: string, description: string, songs: Song[], favorite?:boolean) {
+    constructor(title: string, description: string, songs: Song[], parentId?: string, favorite?:boolean) {
         this.title = title;
         this.songs = songs;
         this.description = description;
         this.favorite = favorite;
+        this.id = uuid();
+        this.parentId = parentId;
     }
 }
 export class Song implements Song {
-    constructor(title: string, length: string, favorite?: boolean) {
+    constructor(title: string, length: string, parentId?:string, favorite?: boolean) {
         this.title = title;
         this.length = length;
         this.favorite = favorite;
+        this.id = uuid();
+        this.parentId = parentId;
     }
-}
-
-export class InputAlbum implements Album {
-    artistName: string;
-    title: string;
-    songs: Song[];
-    description: string;
-    duration: string;
-
-    constructor(title: string,
-        songs: Song[],
-        description: string,
-        duration: string,
-        artistName: string) {
-
-        this.artistName = artistName;
-        this.title = title;
-        this.description = description;
-        this.songs = songs;
-        this.duration = duration;
-
-    }
-
 }

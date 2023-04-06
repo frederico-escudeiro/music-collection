@@ -10,7 +10,7 @@
 				<mat-form-field appearance="fill">
 					<mat-label>Artist</mat-label>
 					<mat-select formControlName="artist" required>
-						<mat-option *ngFor="let artist of allArtists" [value]="artist">
+						<mat-option *ngFor="let artist of allArtists$ | async" [value]="artist">
 							{{artist.name}}
 						</mat-option>
 					</mat-select>

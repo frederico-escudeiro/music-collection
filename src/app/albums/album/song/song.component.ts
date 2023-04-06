@@ -7,6 +7,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditSongComponent } from './edit-song/edit-song.component';
 import { BehaviorSubject } from 'rxjs';
 import { Album, Artist, Song } from 'src/app/shared/types.model';
+import { AppState } from 'src/app/core/store/app.reducers';
+import { select, Store } from '@ngrx/store';
+import { selectAllSongs } from 'src/app/core/selectors/songs.selectors';
+import { SongsActions } from 'src/app/core/store/action-types';
 
 @Component({
   selector: 'app-song',
@@ -15,39 +19,36 @@ import { Album, Artist, Song } from 'src/app/shared/types.model';
 })
 export class SongComponent implements OnInit {
   songTitle = "";
-  albumTitle = ""
-  song!: { song: Song; albumTitle: string; artistName: string; };
+  albumTitle = "";
+  artistName = "Im nothing yet";
+  song!: Song;
   isFavorite: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
-    private httpService: HttpService,
     private router: Router,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private store: Store<AppState>) {
 
   }
 
   ngOnInit() {
-    this.songTitle = this.route.snapshot.params[GlobalConstants.SONG_TITLE_STRING];
-    this.albumTitle = this.route.snapshot.params[GlobalConstants.ALBUM_TITLE_STRING];
     this.route.params.subscribe((params: Params) => {
       this.songTitle = params[GlobalConstants.SONG_TITLE_STRING];
       this.albumTitle = params[GlobalConstants.ALBUM_TITLE_STRING];
-      let songValid = this.httpService.getSongByTitle(this.songTitle);
-      if (songValid) {
-        this.song = songValid;
-        this.isFavorite = !!this.song.song.favorite;
-      } else {
-        ("navigate to not-found");
-        this.router.navigate(["/" + GlobalConstants.NOT_FOUND_STRING]);
-      }
+      this.store.pipe(select(selectAllSongs)).subscribe(songs => {
+        this.song = songs.find(song => song.title === this.songTitle)!
+      });
+      this.isFavorite = !!this.song.favorite;
+      //let songValid = this.httpService.getSongByTitle(this.songTitle);
+
     })
   }
 
   onToggleFavorite() {
     this.isFavorite = !this.isFavorite;
-    this.song.song.favorite = this.isFavorite;
+    this.song.favorite = this.isFavorite;
     this.router.navigate([
       '/'
       + GlobalConstants.MY_ALBUMS_STRING
@@ -57,17 +58,21 @@ export class SongComponent implements OnInit {
       + this.route.snapshot.paramMap.get(GlobalConstants.SONG_TITLE_STRING)
       + (this.isFavorite ? '/' + GlobalConstants.FAVORITE_STRING : '')]);
 
-    this.httpService.updateSongDataWithFavorite
-      (
-        this.songTitle,
-        this.song.albumTitle,
-        this.song.artistName,
-        this.isFavorite
-      )
-    this.favoriteToggleSnackBar();
+
+
+    // this.httpService.updateSongDataWithFavorite
+    //   (
+    //     this.songTitle,
+    //     this.song.albumTitle,
+    //     this.song.artistName,
+    //     this.isFavorite
+    //   )
+
+    //put favorite song in store
+    this.favoriteToggleSnackbar();
   }
 
-  favoriteToggleSnackBar() {
+  favoriteToggleSnackbar() {
     let message = "The song '" + this.songTitle + "' was " + (this.isFavorite ? 'added to' : 'removed from') + " favorites!"
     let snackBarRef = this.snackBar.open(message);
     setTimeout(() => {
@@ -78,14 +83,18 @@ export class SongComponent implements OnInit {
   }
 
   onEditSong() {
-    (this.song.song.favorite);
     const dialogRef = this.dialog.open(EditSongComponent, { data: this.song, disableClose: true });
 
     dialogRef.afterClosed().subscribe((result: { song: Song, album: Album, artist: Artist }) => {
       let message = "";
 
-      if (result !== undefined) {
-        this.httpService.updateWithEditedSong(this.song, result.song, result.album, result.artist);
+      if (result === undefined) {
+        message = "Song '" + this.song.title + "' was not edited. :("
+
+      } else {
+        //this.httpService.updateWithEditedSong(this.song, result.song, result.album, result.artist);
+
+        this.store.dispatch(SongsActions.editSong({ album: result.album, song: result.song }))
 
         message = "Song '" + result.song.title + "'  was successfully edited! :)";
         this.router.navigate(
@@ -93,8 +102,6 @@ export class SongComponent implements OnInit {
             '/' + result.album.title +
             '/' + result.song.title +
             (this.isFavorite ? '/' + GlobalConstants.FAVORITE_STRING : '')]);
-      } else {
-        message = "Song '" + this.song.song.title + "' was not edited. :("
       }
       let snackBarRef = this.snackBar.open(message);
       setTimeout(() => {

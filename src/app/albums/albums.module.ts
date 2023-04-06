@@ -8,9 +8,7 @@ import { AlbumsRoutingModule } from "./albums-routing.module";
 import { EditSongComponent } from './album/song/edit-song/edit-song.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { reduce } from 'rxjs';
 import { albumsReducer } from '../core/reducers/albums.reducers';
-import { AlbumsResolver } from './albums.resolver';
 import { AlbumsEffects } from '../core/effects/albums.effects';
 
 @NgModule({

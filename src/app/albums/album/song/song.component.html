@@ -1,6 +1,6 @@
 <div fxLayout="column" fxLayoutAlign="space-around center">
     <mat-chip id="top-chip" fxHide.lt-md disabled color="primary">SONG</mat-chip>
-    <h1 fxFlexAlign="center">{{song.song.title}}</h1>
+    <h1 fxFlexAlign="center">{{song.title}}</h1>
     <span fxFlexAlign="center" class="material-symbols-rounded" [ngClass]="isFavorite ? 'fill' : ''"
         (click)="onToggleFavorite()">
         favorite
@@ -15,17 +15,17 @@
                 <mat-divider fxHide fxShow.lt-md></mat-divider>
                 <mat-list-item>
                     <strong fxFlex="grow">Length</strong>
-                    <p>{{song.song.length}}</p>
+                    <p>{{song.length}}</p>
                 </mat-list-item>
                 <mat-divider></mat-divider>
                 <mat-list-item>
                     <strong fxFlex="grow">Album</strong>
-                    <p>{{song.albumTitle}}</p>
+                    <p>{{albumTitle}}</p>
                 </mat-list-item>
                 <mat-divider></mat-divider>
                 <mat-list-item>
                     <strong fxFlex="grow">Artist</strong>
-                    <p>{{song.artistName}}</p>
+                    <p>{{artistName}}</p>
                 </mat-list-item>
             </mat-list>
 

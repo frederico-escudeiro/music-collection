@@ -8,14 +8,18 @@ export interface AlbumsState extends EntityState<Album>{
 
 }
 
-export const adapter = createEntityAdapter<Album>();
+export const albumsAdapter = createEntityAdapter<Album>();
 
-export const initialAlbumsState = adapter.getInitialState();
+export const initialAlbumsState = albumsAdapter.getInitialState();
 
 export const albumsReducer = createReducer(
     initialAlbumsState,
     on(AlbumsActions.allAlbumsLoaded,
-        (state, action)=> adapter.setAll(action.albums, state))
+        (state, action)=> albumsAdapter.upsertMany(action.albums, state)),
+    on(AlbumsActions.addNewAlbum,
+        (state, action) => albumsAdapter.addOne(action.album, state)),
+    on(AlbumsActions.editAlbum,
+        (state,action) => albumsAdapter.upsertOne(action.album, state))
 )
 
-export const {selectAll} = adapter.getSelectors();
+export const {selectAll, selectEntities} = albumsAdapter.getSelectors();
